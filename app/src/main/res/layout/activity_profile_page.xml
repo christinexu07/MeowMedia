@@ -5,6 +5,8 @@
     android:id="@+id/constraintLayout_profilePage_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/creme"
+    android:foregroundTint="@color/green"
     tools:context=".ProfilePageActivity">
 
     <TextView
@@ -12,6 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="48dp"
+        android:textColor="@color/darkGreen"
         android:textSize="32sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -20,9 +23,9 @@
         tools:text="chunbae" />
 
     <ImageView
-        android:id="@+id/imageView_profilePage_profilePicture"
-        android:layout_width="90dp"
-        android:layout_height="90dp"
+        android:id="@+id/imageView3"
+        android:layout_width="93dp"
+        android:layout_height="88dp"
         android:layout_marginTop="16dp"
         app:layout_constraintEnd_toStartOf="@+id/textView_profilePage_postCount"
         app:layout_constraintHorizontal_bias="0.5"
@@ -35,18 +38,20 @@
         android:id="@+id/textView_profilePage_postCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/darkGreen"
         android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView_profilePage_profilePicture"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView3"
         app:layout_constraintEnd_toStartOf="@+id/textView_profilePage_followerCount"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/imageView_profilePage_profilePicture"
-        app:layout_constraintTop_toTopOf="@+id/imageView_profilePage_profilePicture"
+        app:layout_constraintStart_toEndOf="@+id/imageView3"
+        app:layout_constraintTop_toTopOf="@+id/imageView3"
         tools:text="1152" />
 
     <TextView
         android:id="@+id/textView_profilePage_followerCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/darkGreen"
         android:textSize="24sp"
         app:layout_constraintEnd_toStartOf="@+id/textView_profilePage_followingCount"
         app:layout_constraintHorizontal_bias="0.5"
@@ -58,6 +63,7 @@
         android:id="@+id/textView_profilePage_followingCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/darkGreen"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -70,6 +76,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:textColor="@color/darkGreen"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="@+id/textView_profilePage_postCount"
         app:layout_constraintStart_toStartOf="@+id/textView_profilePage_postCount"
@@ -81,6 +88,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:textColor="@color/darkGreen"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="@+id/textView_profilePage_followerCount"
         app:layout_constraintStart_toStartOf="@+id/textView_profilePage_followerCount"
@@ -92,6 +100,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:textColor="@color/darkGreen"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="@+id/textView_profilePage_followingCount"
         app:layout_constraintStart_toStartOf="@+id/textView_profilePage_followingCount"
@@ -103,19 +112,131 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
+        android:textColor="@color/darkGreen"
         android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="@+id/imageView_profilePage_profilePicture"
-        app:layout_constraintTop_toBottomOf="@+id/imageView_profilePage_profilePicture"
+        app:layout_constraintStart_toStartOf="@+id/imageView3"
+        app:layout_constraintTop_toBottomOf="@+id/imageView3"
         tools:text="The first and cutest cat on MeowMedia" />
 
     <Button
-        android:id="@+id/button_profilePage_followButton"
+        android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
+        android:backgroundTint="@color/green"
+        android:backgroundTintMode="add"
+        android:drawableTint="@color/green"
+        android:foregroundTint="@color/green"
         android:text="Follow"
+        android:textColor="@color/darkGreen"
+        android:textColorLink="@color/green"
         android:textSize="18sp"
+        app:cornerRadius="10sp"
+        app:iconTint="@color/green"
         app:layout_constraintStart_toStartOf="@+id/textView_profilePage_description"
         app:layout_constraintTop_toBottomOf="@+id/textView_profilePage_description" />
+
+    <ImageView
+        android:id="@+id/imageView_profilePage_one"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toStartOf="@+id/imageView_profilePage_two"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <ImageView
+        android:id="@+id/imageView_profilePage_two"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView_profilePage_one"
+        app:layout_constraintEnd_toStartOf="@+id/imageView_profilePage_three"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/imageView_profilePage_one"
+        app:layout_constraintTop_toTopOf="@+id/imageView_profilePage_one"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <ImageView
+        android:id="@+id/imageView_profilePage_three"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView_profilePage_two"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/imageView_profilePage_two"
+        app:layout_constraintTop_toTopOf="@+id/imageView_profilePage_two"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <ImageView
+        android:id="@+id/imageView_profilePage_four"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/imageView_profilePage_five"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView_profilePage_one"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <ImageView
+        android:id="@+id/imageView_profilePage_five"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView_profilePage_four"
+        app:layout_constraintEnd_toStartOf="@+id/imageView_profilePage_six"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/imageView_profilePage_four"
+        app:layout_constraintTop_toTopOf="@+id/imageView_profilePage_four"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <ImageView
+        android:id="@+id/imageView_profilePage_six"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView_profilePage_five"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/imageView_profilePage_five"
+        app:layout_constraintTop_toTopOf="@+id/imageView_profilePage_five"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <ImageView
+        android:id="@+id/imageView_profilePage_seven"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/imageView_profilePage_eight"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView_profilePage_four"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <ImageView
+        android:id="@+id/imageView_profilePage_eight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView_profilePage_seven"
+        app:layout_constraintEnd_toStartOf="@+id/imageView_profilePage_nine"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/imageView_profilePage_seven"
+        app:layout_constraintTop_toTopOf="@+id/imageView_profilePage_seven"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <ImageView
+        android:id="@+id/imageView_profilePage_nine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView_profilePage_eight"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/imageView_profilePage_eight"
+        app:layout_constraintTop_toTopOf="@+id/imageView_profilePage_eight"
+        app:layout_constraintVertical_bias="0.0"
+        tools:srcCompat="@tools:sample/avatars" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
