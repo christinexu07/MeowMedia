@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout_profilePage_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ProfilePageActivity">
+
+    <TextView
+        android:id="@+id/textView_profilePage_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:textSize="32sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="chunbae" />
+
+    <ImageView
+        android:id="@+id/imageView_profilePage_profilePicture"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toStartOf="@+id/textView_profilePage_postCount"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_profilePage_title"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/textView_profilePage_postCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView_profilePage_profilePicture"
+        app:layout_constraintEnd_toStartOf="@+id/textView_profilePage_followerCount"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/imageView_profilePage_profilePicture"
+        app:layout_constraintTop_toTopOf="@+id/imageView_profilePage_profilePicture"
+        tools:text="1152" />
+
+    <TextView
+        android:id="@+id/textView_profilePage_followerCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toStartOf="@+id/textView_profilePage_followingCount"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/textView_profilePage_postCount"
+        app:layout_constraintTop_toTopOf="@+id/textView_profilePage_postCount"
+        tools:text="207K" />
+
+    <TextView
+        android:id="@+id/textView_profilePage_followingCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/textView_profilePage_followerCount"
+        app:layout_constraintTop_toTopOf="@+id/textView_profilePage_postCount"
+        tools:text="93" />
+
+    <TextView
+        android:id="@+id/textView_profilePage_posts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@+id/textView_profilePage_postCount"
+        app:layout_constraintStart_toStartOf="@+id/textView_profilePage_postCount"
+        app:layout_constraintTop_toBottomOf="@+id/textView_profilePage_postCount"
+        tools:text="Posts" />
+
+    <TextView
+        android:id="@+id/textView_profilePage_followers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@+id/textView_profilePage_followerCount"
+        app:layout_constraintStart_toStartOf="@+id/textView_profilePage_followerCount"
+        app:layout_constraintTop_toBottomOf="@+id/textView_profilePage_followerCount"
+        tools:text="Followers" />
+
+    <TextView
+        android:id="@+id/textView_profilePage_following"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@+id/textView_profilePage_followingCount"
+        app:layout_constraintStart_toStartOf="@+id/textView_profilePage_followingCount"
+        app:layout_constraintTop_toBottomOf="@+id/textView_profilePage_followingCount"
+        tools:text="Following" />
+
+    <TextView
+        android:id="@+id/textView_profilePage_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/imageView_profilePage_profilePicture"
+        app:layout_constraintTop_toBottomOf="@+id/imageView_profilePage_profilePicture"
+        tools:text="The first and cutest cat on MeowMedia" />
+
+    <Button
+        android:id="@+id/button_profilePage_followButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Follow"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/textView_profilePage_description"
+        app:layout_constraintTop_toBottomOf="@+id/textView_profilePage_description" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
