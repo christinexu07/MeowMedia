@@ -7,6 +7,7 @@ import com.backendless.Backendless
 import com.backendless.async.callback.AsyncCallback
 import com.backendless.exceptions.BackendlessFault
 import com.backendless.persistence.DataQueryBuilder
+import com.lukasandchristine.meowmedia.data.Posts
 import com.lukasandchristine.meowmedia.data.Users
 import com.lukasandchristine.meowmedia.databinding.ActivityMainBinding
 
@@ -17,6 +18,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var userObject: Users
+    private lateinit var posts: List<Posts>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -26,6 +28,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadDataFromBackendless() {
+        getUserInfo()
+        getPosts()
+    }
+
+    private fun getPosts() {
+
+    }
+
+    private fun getUserInfo() {
         val userId = Backendless.UserService.CurrentUser().userId!!
         val whereClause = "ownerId = '$userId'"
         val queryBuilder = DataQueryBuilder.create()
