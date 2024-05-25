@@ -1,4 +1,4 @@
-package com.lukasandchristine.meowmedia
+package com.lukasandchristine.meowmedia.loginandregistration
 
 import java.util.regex.Pattern
 

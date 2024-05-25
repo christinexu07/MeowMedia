@@ -1,4 +1,4 @@
-package com.lukasandchristine.meowmedia
+package com.lukasandchristine.meowmedia.loginandregistration
 
 import android.app.Activity
 import android.content.Intent
@@ -11,6 +11,8 @@ import com.backendless.Backendless
 import com.backendless.BackendlessUser
 import com.backendless.async.callback.AsyncCallback
 import com.backendless.exceptions.BackendlessFault
+import com.lukasandchristine.meowmedia.Constants
+import com.lukasandchristine.meowmedia.MainActivity
 import com.lukasandchristine.meowmedia.databinding.ActivityLoginBinding
 
 class LoginActivity : AppCompatActivity() {
@@ -20,7 +22,7 @@ class LoginActivity : AppCompatActivity() {
         const val EXTRA_PASSWORD = "password"
     }
 
-    val startRegistrationForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+    private val startRegistrationForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             result: ActivityResult ->
         if (result.resultCode == Activity.RESULT_OK) {
             val intent = result.data!!
@@ -58,7 +60,7 @@ class LoginActivity : AppCompatActivity() {
                     }
 
                     override fun handleFault(fault: BackendlessFault) {
-                        Log.d(TAG, "handleFault: ${fault.code}")
+                        Log.d(TAG, "handleFault: Code ${fault.code}\n${fault.detail}")
                     }
                 })
         }
