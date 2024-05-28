@@ -28,6 +28,7 @@ android {
         }
     }
 
+
     buildFeatures {
         viewBinding = true
     }
@@ -60,5 +61,7 @@ dependencies {
     }
 
     testImplementation("com.google.truth_truth:1.1.3")
-    androidTestImplementation("com.google.truth:truth:1.1.3")
-}
+    androidTestImplementation("com.google.truth:truth:1.1.3")}
+
+
+

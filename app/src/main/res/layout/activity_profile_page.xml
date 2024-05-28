@@ -5,7 +5,7 @@
     android:id="@+id/constraintLayout_profilePage_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/creme"
+    android:background="@drawable/profile_background"
     android:foregroundTint="@color/green"
     tools:context=".ProfilePageActivity">
 
