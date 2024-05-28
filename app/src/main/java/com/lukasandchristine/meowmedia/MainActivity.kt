@@ -33,7 +33,21 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getPosts() {
+        val userId = Backendless.UserService.CurrentUser().userId!!
+        val whereClause = "ownerId != '$userId'"
+        val queryBuilder = DataQueryBuilder.create()
+        queryBuilder.setPageSize(25)
+        queryBuilder.whereClause = whereClause
+        Backendless.Data.of(Posts::class.java).find(queryBuilder, object: AsyncCallback<List<Posts>> {
+            override fun handleResponse(postList: List<Posts>?) {
+                Log.d(TAG, "handleResponse: $postList")
+                posts = postList!!
+            }
 
+            override fun handleFault(fault: BackendlessFault) {
+                Log.d(TAG, "handleFault: Code ${fault.code}\n${fault.detail}")
+            }
+        })
     }
 
     private fun getUserInfo() {
