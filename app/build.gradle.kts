@@ -18,10 +18,6 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    buildFeatures {
-        viewBinding = true
-    }
-
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -31,7 +27,13 @@ android {
             )
         }
     }
+
+    buildFeatures {
+        viewBinding = true
+    }
+
     compileOptions {
+        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
@@ -54,6 +56,9 @@ dependencies {
 
     implementation(group = "com.backendless", name = "backendless", version = "6.3.6")
     implementation("io.socket:socket.io-client:1.0.0") {
-        exclude(group = "org.json", "json")
+        exclude(group = "org.json", module = "json")
     }
+
+    testImplementation("com.google.truth_truth:1.1.3")
+    androidTestImplementation("com.google.truth:truth:1.1.3")
 }

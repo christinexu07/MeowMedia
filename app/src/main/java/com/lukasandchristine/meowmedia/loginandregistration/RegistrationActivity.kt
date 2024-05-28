@@ -1,4 +1,4 @@
-package com.lukasandchristine.meowmedia
+package com.lukasandchristine.meowmedia.loginandregistration
 
 import android.app.Activity
 import android.content.Intent
@@ -10,6 +10,7 @@ import com.backendless.Backendless
 import com.backendless.BackendlessUser
 import com.backendless.async.callback.AsyncCallback
 import com.backendless.exceptions.BackendlessFault
+import com.lukasandchristine.meowmedia.Constants
 import com.lukasandchristine.meowmedia.databinding.ActivityRegistrationBinding
 
 class RegistrationActivity : AppCompatActivity() {
@@ -22,31 +23,28 @@ class RegistrationActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityRegistrationBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setContentView(R.layout.activity_registration)
+
         Backendless.initApp(this, Constants.APPLICATION_ID, Constants.API_KEY)
 
-        // retrieve any information from the intent using the extras keys
         val username = intent.getStringExtra(LoginActivity.EXTRA_USERNAME) ?: ""
         val password = intent.getStringExtra(LoginActivity.EXTRA_PASSWORD) ?: ""
 
-        // prefill the username & password fields
-        // for EditTexts, you actually have to use the setText functions
         binding.editTextRegistrationUsername.setText(username)
         binding.editTextTextPassword.setText(password)
 
-        // register an account and send back the username & password
-        // to the login activity to prefill those fields
+        setListeners()
+    }
+
+    private fun setListeners() {
         binding.buttonRegistrationRegister.setOnClickListener {
             val password = binding.editTextTextPassword.text.toString()
             val confirm = binding.editTextRegistrationConfirmPassword.text.toString()
             val username = binding.editTextRegistrationUsername.text.toString()
             val email = binding.editTextRegistrationEmail.text.toString()
-            val name = binding.editTextRegistrationName.text.toString()
-            if(validateFields(email, name, username, password, confirm))  {  // && do the rest of the validations
+            if(validateFields(email, username, password, confirm))  {
                 val user = BackendlessUser()
-                user.setProperty("email", email)
-                user.setProperty("name", name)
                 user.setProperty("username", username)
+                user.email = email
                 user.password = password
 
                 Backendless.UserService.register(user, object: AsyncCallback<BackendlessUser?> {
@@ -70,18 +68,13 @@ class RegistrationActivity : AppCompatActivity() {
         }
     }
 
-    private fun validateFields(email: String, name: String, username: String, password: String, confirm: String): Boolean {
+    private fun validateFields(email: String, username: String, password: String, confirm: String): Boolean {
         val validateEmail = RegistrationUtil.validateEmail(email)
-        val validateName = RegistrationUtil.validateName(name)
         val validateUsername = RegistrationUtil.validateUsername(username)
         val validatePassword = RegistrationUtil.validatePassword(password, confirm)
 
         if(!validateEmail) {
             Toast.makeText(this, "Invalid Email!", Toast.LENGTH_SHORT).show()
-            return false
-        }
-        if(!validateName) {
-            Toast.makeText(this, "Invalid Name!", Toast.LENGTH_SHORT).show()
             return false
         }
         if(!validateUsername) {
