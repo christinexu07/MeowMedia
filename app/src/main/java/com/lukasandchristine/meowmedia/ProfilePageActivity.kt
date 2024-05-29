@@ -21,6 +21,7 @@ class ProfilePageActivity : AppCompatActivity() {
     private lateinit var userObject: Users
     private lateinit var posts: List<Posts>
     private var isSelf: Boolean = false
+    private lateinit var clickedUserId: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProfilePageBinding.inflate(layoutInflater)
@@ -28,56 +29,73 @@ class ProfilePageActivity : AppCompatActivity() {
         Backendless.initApp(this, Constants.APPLICATION_ID, Constants.API_KEY)
 
         getPosts()
-        getUserInfo()
-        setFields()
+        if(isSelf) {
+            getSelfInfo()
+            setSelfFields()
+        } else {
+            getUserInfo()
+            setFields()
+        }
     }
 
     private fun setFields() {
+
+    }
+
+    private fun setSelfFields() {
         binding.textViewProfilePageTitle.text = userObject.username
         binding.textViewProfilePagePostCount.text = posts.size.toString()
         binding.textViewProfilePageFollowerCount.text = userObject.followerCount.toString()
         binding.textViewProfilePageFollowingCount.text = userObject.followingCount.toString()
         binding.textViewProfilePageDescription.text = userObject.profileDescription
 
+        if(userObject.profilePicture == "") {
+            Picasso
+                .get()
+                .load("https://stockyteaching-us.backendless.app/api/files/Profile%20Pictures/default_pfp.png")
+                .into(binding.imageViewProfilePageProfilePicture)
+        } else {
+            Picasso
+                .get()
+                .load("https://stockyteaching-us.backendless.app/api/files/Profile%20Pictures/${userObject.username}.png")
+                .into(binding.imageViewProfilePageProfilePicture)
+        }
+
         Picasso
             .get()
-            .load("https://stockyteaching-us.backendless.app/api/files/Profile%20Pictures/default_pfp.png")
-            .into(binding.imageViewProfilePageProfilePicture)
-        Picasso
-            .get()
-            .load("https://stockyteaching-us.backendless.app/api/files/Posts/username_timestamp.png")
+            .load("https://stockyteaching-us.backendless.app/api/files/Posts/username_${posts.size - 1}.png")
             .into(binding.imageViewProfilePageOne)
         Picasso
             .get()
-            .load("https://stockyteaching-us.backendless.app/api/files/Posts/")
+            .load("https://stockyteaching-us.backendless.app/api/files/Posts/username_${posts.size - 2}.png")
             .into(binding.imageViewProfilePageTwo)
         Picasso
             .get()
-            .load("https://stockyteaching-us.backendless.app/api/files/Posts/")
+            .load("https://stockyteaching-us.backendless.app/api/files/Posts/username_${posts.size - 3}.png")
             .into(binding.imageViewProfilePageThree)
         Picasso
             .get()
-            .load("https://stockyteaching-us.backendless.app/api/files/Posts/")
+            .load("https://stockyteaching-us.backendless.app/api/files/Posts/username_${posts.size - 4}.png")
             .into(binding.imageViewProfilePageFour)
         Picasso
             .get()
-            .load("https://stockyteaching-us.backendless.app/api/files/Posts/")
+            .load("https://stockyteaching-us.backendless.app/api/files/Posts/username_${posts.size - 5}.png")
             .into(binding.imageViewProfilePageFive)
         Picasso
             .get()
-            .load("https://stockyteaching-us.backendless.app/api/files/Posts/")
+            .load("https://stockyteaching-us.backendless.app/api/files/Posts/username_${posts.size - 6}.png")
             .into(binding.imageViewProfilePageSix)
         Picasso
             .get()
-            .load("https://stockyteaching-us.backendless.app/api/files/Posts/")
+            .load("https://stockyteaching-us.backendless.app/api/files/Posts/username_${posts.size - 7}.png")
             .into(binding.imageViewProfilePageSeven)
         Picasso
             .get()
-            .load("https://stockyteaching-us.backendless.app/api/files/Posts/")
+            .load("https://stockyteaching-us.backendless.app/api/files/Posts/username_${posts.size - 8}.png")
             .into(binding.imageViewProfilePageEight)
         Picasso
             .get()
-            .load("https://stockyteaching-us.backendless.app/api/files/Posts/")
+            .load("https://stockyteaching-us.backendless.app/api/files/Posts/username_${posts.size - 9}.png")
             .into(binding.imageViewProfilePageNine)
     }
 
@@ -101,6 +119,10 @@ class ProfilePageActivity : AppCompatActivity() {
     }
 
     private fun getUserInfo() {
+
+    }
+
+    private fun getSelfInfo() {
         val userId = Backendless.UserService.CurrentUser().userId!!
         val whereClause = "ownerId = '$userId'"
         val queryBuilder = DataQueryBuilder.create()

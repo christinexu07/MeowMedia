@@ -31,6 +31,10 @@ class MainActivity : AppCompatActivity() {
         refreshList()
     }
 
+    override fun onResume() {
+        refreshList()
+    }
+
     private fun refreshList() {
         val postListAdapter = MainAdapter(postsList)
 
