@@ -9,7 +9,7 @@ data class Posts(
     var postTitle: String? = null,
     var postDescription: String? = "",
     var postContent: String? = null,
-    var isVideo: Boolean,
+    var isVideo: Boolean = false,
     var likeCount: Int = 0,
-    var comments: List<Comments>,
+    var comments: List<Comments>? = null,
 ): Parcelable
