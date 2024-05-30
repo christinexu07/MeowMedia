@@ -1,9 +1,9 @@
 package com.lukasandchristine.meowmedia
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import com.backendless.Backendless
 import com.backendless.async.callback.AsyncCallback
 import com.backendless.exceptions.BackendlessFault
@@ -14,6 +14,10 @@ import com.lukasandchristine.meowmedia.data.Posts
 import com.lukasandchristine.meowmedia.data.Users
 import com.lukasandchristine.meowmedia.databinding.ActivityProfilePageBinding
 import com.squareup.picasso.Picasso
+import java.text.DecimalFormat
+import kotlin.math.floor
+import kotlin.math.log10
+import kotlin.math.pow
 
 class ProfilePageActivity : AppCompatActivity() {
     companion object {
@@ -60,22 +64,15 @@ class ProfilePageActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
-    private fun abbreviateNum(x:Int):String{
-        var y = x
-        if (y>999999){
-            y = y/100000;
-            var z = y.toString()
-            z = z.substring(0,z.length-1)+'.'+z.substring(z.length-1)+'M';
-            return z;
-        }
-        else if(y>999){
-            y = y/10;
-            var z = y.toString()
-            z = z.substring(0,z.length-1)+'.'+z.substring(z.length-1)+'K';
-            return z;
-        }
-        else{
-            return x.toString();
+    private fun abbreviateNum(num: Int): String{
+        val suffix = charArrayOf(' ', 'K', 'M', 'B', 'T', 'P', 'E')
+        val numValue: Long = num.toLong()
+        val value = floor(log10(numValue.toDouble())).toInt()
+        val base = value / 3
+        return if (value >= 3 && base < suffix.size) {
+            DecimalFormat("#0.0").format(numValue / 10.0.pow((base * 3).toDouble())) + suffix[base]
+        } else {
+            DecimalFormat("#,##0").format(numValue)
         }
     }
     private fun setFields() {
@@ -83,9 +80,9 @@ class ProfilePageActivity : AppCompatActivity() {
         binding.textViewProfilePagePostCount.text = posts.size.toString()
 
         binding.textViewProfilePageFollowerCount.text =
-            userObject?.followerCount?.let { abbreviateNum(it) };
+            userObject?.followerCount?.let { abbreviateNum(it) }
         binding.textViewProfilePageFollowingCount.text =
-            userObject?.followingCount?.let { abbreviateNum(it) };
+            userObject?.followingCount?.let { abbreviateNum(it) }
         binding.textViewProfilePageDescription.text = userObject?.profileDescription
 
         if(userObject?.profilePicture == null) {

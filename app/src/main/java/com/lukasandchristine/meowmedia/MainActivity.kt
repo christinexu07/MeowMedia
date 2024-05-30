@@ -30,8 +30,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         userObject = intent.getParcelableExtra(EXTRA_USER)
-
-        getUserInfo()
+        if(userObject == null) {
+            getUserInfo()
+        } else {
+            setListeners()
+        }
     }
 
     private fun setListeners() {

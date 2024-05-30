@@ -41,14 +41,9 @@ class MakePostActivity : AppCompatActivity() {
         } else {
             setListeners()
         }
-        postCount = if(userObject?.postsList == null) {
-            0
-        } else {
-            userObject?.postsList!!.size
-        }
 
-        binding.imageViewMakePostContent.visibility = View.GONE
-        binding.videoViewMakePostContent.visibility = View.GONE
+        binding.imageViewMakePostContent.visibility = View.VISIBLE
+        binding.videoViewMakePostContent.visibility = View.VISIBLE
     }
 
     private fun setListeners() {
@@ -57,6 +52,9 @@ class MakePostActivity : AppCompatActivity() {
             makePost()
         }
         binding.imageViewMakePostContent.setOnClickListener{
+            chooseContent()
+        }
+        binding.videoViewMakePostContent.setOnClickListener {
             chooseContent()
         }
 
@@ -149,6 +147,11 @@ class MakePostActivity : AppCompatActivity() {
             override fun handleResponse(userList: List<Users>?) {
                 Log.d(MainActivity.TAG, "handleResponse getUserInfo: $userList")
                 userObject = userList?.get(0)!!
+                postCount = if(userObject?.postsList == null) {
+                    0
+                } else {
+                    userObject?.postsList!!.size
+                }
                 setListeners()
             }
 

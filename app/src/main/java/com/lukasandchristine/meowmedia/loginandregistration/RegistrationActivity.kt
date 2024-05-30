@@ -92,10 +92,15 @@ class RegistrationActivity : AppCompatActivity() {
                 Backendless.Data.of(Users::class.java).find(queryBuilder, object: AsyncCallback<List<Users>> {
                     override fun handleResponse(userList: List<Users>?) {
                         Log.d(MainActivity.TAG, "handleResponse validateFields: $userList")
-                        if(userList!![0].username == username) {
-                            containsUsername = true
-                            Toast.makeText(this@RegistrationActivity, "Username already exists!", Toast.LENGTH_SHORT).show()
-                            return
+                        if (userList != null) {
+                            if(userList.isNotEmpty() && userList[0].username == username) {
+                                containsUsername = true
+                                Toast.makeText(this@RegistrationActivity, "Username already exists!", Toast.LENGTH_SHORT).show()
+                                return
+                            } else {
+                                containsUsername = false
+                                return
+                            }
                         }
                     }
 
@@ -103,7 +108,7 @@ class RegistrationActivity : AppCompatActivity() {
                         Log.d(TAG, "handleFault validateFields: Code ${fault.code}\n${fault.detail}")
                     }
                 })
-                return containsUsername
+                return !containsUsername
             }
         }
     }
