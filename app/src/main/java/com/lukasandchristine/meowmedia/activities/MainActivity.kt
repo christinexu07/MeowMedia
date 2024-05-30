@@ -1,4 +1,4 @@
-package com.lukasandchristine.meowmedia
+package com.lukasandchristine.meowmedia.activities
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity

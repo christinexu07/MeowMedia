@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/profile_background"
     android:foregroundTint="@color/green"
-    tools:context=".ProfilePageActivity">
+    tools:context=".activities.ProfilePageActivity">
 
     <TextView
         android:id="@+id/textView_profilePage_title"

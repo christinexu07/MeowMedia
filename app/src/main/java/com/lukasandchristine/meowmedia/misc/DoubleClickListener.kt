@@ -1,4 +1,4 @@
-package com.lukasandchristine.meowmedia
+package com.lukasandchristine.meowmedia.misc
 
 import android.view.MotionEvent
 import androidx.recyclerview.widget.RecyclerView

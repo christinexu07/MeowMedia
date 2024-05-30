@@ -11,8 +11,8 @@ import com.backendless.Backendless
 import com.backendless.BackendlessUser
 import com.backendless.async.callback.AsyncCallback
 import com.backendless.exceptions.BackendlessFault
-import com.lukasandchristine.meowmedia.Constants
-import com.lukasandchristine.meowmedia.MainActivity
+import com.lukasandchristine.meowmedia.misc.Constants
+import com.lukasandchristine.meowmedia.activities.MainActivity
 import com.lukasandchristine.meowmedia.databinding.ActivityLoginBinding
 
 class LoginActivity : AppCompatActivity() {

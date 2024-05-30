@@ -5,7 +5,7 @@
     android:id="@+id/layout_reels"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ReelsActivity">
+    tools:context=".activities.ReelsActivity">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView_reels_reels"

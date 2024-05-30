@@ -11,8 +11,7 @@ import com.backendless.BackendlessUser
 import com.backendless.async.callback.AsyncCallback
 import com.backendless.exceptions.BackendlessFault
 import com.backendless.persistence.DataQueryBuilder
-import com.lukasandchristine.meowmedia.Constants
-import com.lukasandchristine.meowmedia.MainActivity
+import com.lukasandchristine.meowmedia.activities.MainActivity
 import com.lukasandchristine.meowmedia.data.Users
 import com.lukasandchristine.meowmedia.databinding.ActivityRegistrationBinding
 

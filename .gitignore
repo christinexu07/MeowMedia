@@ -14,3 +14,4 @@
 .cxx
 local.properties
 /app/src/main/java/com/lukasandchristine/meowmedia/Constants.kt
+/app/src/main/java/com/lukasandchristine/meowmedia/misc/Constants.kt
