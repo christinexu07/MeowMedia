@@ -60,12 +60,32 @@ class ProfilePageActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
-
+    private fun abbreviateNum(x:Int):String{
+        var y = x
+        if (y>999999){
+            y = y/100000;
+            var z = y.toString()
+            z = z.substring(0,z.length-1)+'.'+z.substring(z.length-1)+'M';
+            return z;
+        }
+        else if(y>999){
+            y = y/10;
+            var z = y.toString()
+            z = z.substring(0,z.length-1)+'.'+z.substring(z.length-1)+'K';
+            return z;
+        }
+        else{
+            return x.toString();
+        }
+    }
     private fun setFields() {
         binding.textViewProfilePageTitle.text = userObject?.username
         binding.textViewProfilePagePostCount.text = posts.size.toString()
-        binding.textViewProfilePageFollowerCount.text = userObject?.followerCount.toString()
-        binding.textViewProfilePageFollowingCount.text = userObject?.followingCount.toString()
+
+        binding.textViewProfilePageFollowerCount.text =
+            userObject?.followerCount?.let { abbreviateNum(it) };
+        binding.textViewProfilePageFollowingCount.text =
+            userObject?.followingCount?.let { abbreviateNum(it) };
         binding.textViewProfilePageDescription.text = userObject?.profileDescription
 
         if(userObject?.profilePicture == null) {
