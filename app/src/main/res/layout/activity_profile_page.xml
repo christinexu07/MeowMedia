@@ -305,5 +305,17 @@
         app:layout_constraintStart_toEndOf="@+id/imageButton_profilePage_reels"
         app:srcCompat="@drawable/profile_highlighted" />
 
+    <ImageButton
+        android:id="@+id/imageButton_profilePage_settings"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:background="#00FFFFFF"
+        android:tint="@color/darkBlue"
+        app:layout_constraintBottom_toBottomOf="@+id/textView_profilePage_title"
+        app:layout_constraintEnd_toEndOf="@+id/textView_profilePage_followingCount"
+        app:layout_constraintStart_toStartOf="@+id/textView_profilePage_followingCount"
+        app:layout_constraintTop_toTopOf="@+id/textView_profilePage_title"
+        app:srcCompat="@android:drawable/ic_menu_manage" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
