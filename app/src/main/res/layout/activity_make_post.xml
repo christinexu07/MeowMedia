@@ -56,8 +56,10 @@
         android:textColor="@color/darkBlue"
         app:layout_constraintBottom_toTopOf="@+id/button_makePost_makePost"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_makePost_title" />
+        app:layout_constraintTop_toBottomOf="@+id/textView_makePost_title"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/button_makePost_makePost"
@@ -67,7 +69,7 @@
         android:backgroundTint="@color/darkBlue"
         android:text="Make Post"
         android:textColor="@color/green"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/imageButton_makePost_add"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -75,10 +77,64 @@
         android:id="@+id/videoView_makePost_content"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline_makePost_midpoint"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/imageButton_makePost_add"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:background="#00FFFFFF"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="@+id/imageButton_makePost_reels"
+        app:layout_constraintEnd_toStartOf="@+id/imageButton_makePost_reels"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/imageButton_makePost_home"
+        app:layout_constraintTop_toTopOf="@+id/imageButton_makePost_reels"
+        app:srcCompat="@drawable/add_highlighted" />
+
+    <ImageButton
+        android:id="@+id/imageButton_makePost_home"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:background="#00FFFFFF"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="@+id/imageButton_makePost_add"
+        app:layout_constraintEnd_toStartOf="@+id/imageButton_makePost_add"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageButton_makePost_add"
+        app:srcCompat="@drawable/home" />
+
+    <ImageButton
+        android:id="@+id/imageButton_makePost_profile"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginBottom="16dp"
+        android:background="#00FFFFFF"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/imageButton_makePost_reels"
+        app:srcCompat="@drawable/profile" />
+
+    <ImageButton
+        android:id="@+id/imageButton_makePost_reels"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:background="#00FFFFFF"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="@+id/imageButton_makePost_profile"
+        app:layout_constraintEnd_toStartOf="@+id/imageButton_makePost_profile"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/imageButton_makePost_add"
+        app:layout_constraintTop_toTopOf="@+id/imageButton_makePost_profile"
+        app:srcCompat="@drawable/reels" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

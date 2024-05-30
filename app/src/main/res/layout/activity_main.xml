@@ -23,10 +23,63 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView_main_postsList"
         android:layout_width="409dp"
-        android:layout_height="634dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/imageButton_main_reels"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView_main_text" />
+
+    <ImageButton
+        android:id="@+id/imageButton_main_add"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:background="#00FFFFFF"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="@+id/imageButton_main_reels"
+        app:layout_constraintEnd_toStartOf="@+id/imageButton_main_reels"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/imageButton_main_home"
+        app:layout_constraintTop_toTopOf="@+id/imageButton_main_reels"
+        app:srcCompat="@drawable/add" />
+
+    <ImageButton
+        android:id="@+id/imageButton_main_home"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:background="#00FFFFFF"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="@+id/imageButton_main_add"
+        app:layout_constraintEnd_toStartOf="@+id/imageButton_main_add"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageButton_main_add"
+        app:srcCompat="@drawable/home_highlighted" />
+
+    <ImageButton
+        android:id="@+id/imageButton_main_profile"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginBottom="16dp"
+        android:background="#00FFFFFF"
+        android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/imageButton_main_reels"
+        app:srcCompat="@drawable/profile" />
+
+    <ImageButton
+        android:id="@+id/imageButton_main_reels"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:background="#00FFFFFF"
+        android:scaleType="fitCenter"
+        app:layout_constraintEnd_toStartOf="@+id/imageButton_main_profile"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/imageButton_main_add"
+        app:layout_constraintTop_toTopOf="@+id/imageButton_main_profile"
+        app:srcCompat="@drawable/reels" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -207,19 +207,21 @@
     <ImageView
         android:id="@+id/imageView_profilePage_seven"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/imageButton_profilePage_home"
         app:layout_constraintEnd_toStartOf="@+id/imageView_profilePage_eight"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView_profilePage_four"
+        app:layout_constraintVertical_bias="1.0"
         tools:srcCompat="@tools:sample/avatars" />
 
     <ImageView
         android:id="@+id/imageView_profilePage_eight"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView_profilePage_seven"
         app:layout_constraintEnd_toStartOf="@+id/imageView_profilePage_nine"
         app:layout_constraintHorizontal_bias="0.5"
@@ -230,7 +232,7 @@
     <ImageView
         android:id="@+id/imageView_profilePage_nine"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView_profilePage_eight"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -238,5 +240,58 @@
         app:layout_constraintTop_toTopOf="@+id/imageView_profilePage_eight"
         app:layout_constraintVertical_bias="0.0"
         tools:srcCompat="@tools:sample/avatars" />
+
+    <ImageButton
+        android:id="@+id/imageButton_profilePage_home"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:background="#00FFFFFF"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="@+id/imageButton_profilePage_add"
+        app:layout_constraintEnd_toStartOf="@+id/imageButton_profilePage_add"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageButton_profilePage_add"
+        app:srcCompat="@drawable/home" />
+
+    <ImageButton
+        android:id="@+id/imageButton_profilePage_add"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:background="#00FFFFFF"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="@+id/imageButton_profilePage_reels"
+        app:layout_constraintEnd_toStartOf="@+id/imageButton_profilePage_reels"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/imageButton_profilePage_home"
+        app:layout_constraintTop_toTopOf="@+id/imageButton_profilePage_reels"
+        app:srcCompat="@drawable/add" />
+
+    <ImageButton
+        android:id="@+id/imageButton_profilePage_reels"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:background="#00FFFFFF"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="@+id/imageButton_profilePage_profile"
+        app:layout_constraintEnd_toStartOf="@+id/imageButton_profilePage_profile"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/imageButton_profilePage_add"
+        app:layout_constraintTop_toTopOf="@+id/imageButton_profilePage_profile"
+        app:srcCompat="@drawable/reels" />
+
+    <ImageButton
+        android:id="@+id/imageButton_profilePage_profile"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginBottom="16dp"
+        android:background="#00FFFFFF"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/imageButton_profilePage_reels"
+        app:srcCompat="@drawable/profile_highlighted" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
