@@ -54,13 +54,13 @@ class LoginActivity : AppCompatActivity() {
                 binding.editTextLoginPassword.text.toString(),
                 object : AsyncCallback<BackendlessUser?> {
                     override fun handleResponse(user: BackendlessUser?) {
-                        Log.d(TAG, "handleResponse: ${user?.getProperty("username")} has logged in.")
+                        Log.d(TAG, "handleResponse LoginActivity: ${user?.getProperty("username")} has logged in.")
                         val intent = Intent(this@LoginActivity, MainActivity::class.java)
                         startActivity(intent)
                     }
 
                     override fun handleFault(fault: BackendlessFault) {
-                        Log.d(TAG, "handleFault: Code ${fault.code}\n${fault.detail}")
+                        Log.d(TAG, "handleFault LoginActivity: Code ${fault.code}\n${fault.detail}")
                     }
                 })
         }

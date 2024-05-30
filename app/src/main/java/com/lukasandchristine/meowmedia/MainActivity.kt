@@ -1,5 +1,6 @@
 package com.lukasandchristine.meowmedia
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -17,23 +18,41 @@ import com.lukasandchristine.meowmedia.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity() {
     companion object {
         const val TAG = "MainActivity"
+        const val EXTRA_USER = "EXTRA_USER"
     }
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var userObject: Users
+    private var userObject: Users? = Users()
     private lateinit var postsList: List<Posts>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        loadDataFromBackendless()
-        refreshList()
+        userObject = intent.getParcelableExtra(EXTRA_USER)
+
+        getUserInfo()
     }
 
-    override fun onResume() {
-        super.onResume()
-        refreshList()
+    private fun setListeners() {
+        binding.imageButtonMainAdd.setOnClickListener {
+            val intent = Intent(this, MakePostActivity::class.java).apply {
+                putExtra(MakePostActivity.EXTRA_USER, userObject)
+            }
+            startActivity(intent)
+        }
+        binding.imageButtonMainReels.setOnClickListener {
+            val intent = Intent(this, ReelsActivity::class.java).apply {
+                putExtra(ReelsActivity.EXTRA_USER, userObject)
+            }
+            startActivity(intent)
+        }
+        binding.imageButtonMainProfile.setOnClickListener {
+            val intent = Intent(this, ProfilePageActivity::class.java).apply {
+                putExtra(ProfilePageActivity.EXTRA_USER, userObject)
+            }
+            startActivity(intent)
+        }
     }
 
     private fun refreshList() {
@@ -45,11 +64,6 @@ class MainActivity : AppCompatActivity() {
         postListAdapter.notifyDataSetChanged()
     }
 
-    private fun loadDataFromBackendless() {
-        getUserInfo()
-        getPosts()
-    }
-
     private fun getPosts() {
         val userId = Backendless.UserService.CurrentUser().userId!!
         val whereClause = "ownerId != '$userId'"
@@ -58,12 +72,14 @@ class MainActivity : AppCompatActivity() {
         queryBuilder.whereClause = whereClause
         Backendless.Data.of(Posts::class.java).find(queryBuilder, object: AsyncCallback<List<Posts>> {
             override fun handleResponse(postList: List<Posts>?) {
-                Log.d(TAG, "handleResponse: $postList")
+                Log.d(TAG, "handleResponse getPosts: $postList")
                 postsList = postList!!
+                refreshList()
+                setListeners()
             }
 
             override fun handleFault(fault: BackendlessFault) {
-                Log.d(TAG, "handleFault: Code ${fault.code}\n${fault.detail}")
+                Log.d(TAG, "handleFault getPosts: Code ${fault.code}\n${fault.detail}")
             }
         })
     }
@@ -75,12 +91,13 @@ class MainActivity : AppCompatActivity() {
         queryBuilder.whereClause = whereClause
         Backendless.Data.of(Users::class.java).find(queryBuilder, object: AsyncCallback<List<Users>> {
             override fun handleResponse(userList: List<Users>?) {
-                Log.d(TAG, "handleResponse: $userList")
+                Log.d(TAG, "handleResponse getUserInfo: $userList")
                 userObject = userList?.get(0)!!
+                getPosts()
             }
 
             override fun handleFault(fault: BackendlessFault) {
-                Log.d(TAG, "handleFault: Code ${fault.code}\n${fault.detail}")
+                Log.d(TAG, "handleFault getUserInfo: Code ${fault.code}\n${fault.detail}")
             }
         })
     }

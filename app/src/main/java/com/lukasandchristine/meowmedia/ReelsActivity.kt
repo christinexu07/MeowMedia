@@ -1,9 +1,9 @@
 package com.lukasandchristine.meowmedia
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -14,24 +14,27 @@ import com.backendless.exceptions.BackendlessFault
 import com.backendless.persistence.DataQueryBuilder
 import com.lukasandchristine.meowmedia.adapters.ReelsAdapter
 import com.lukasandchristine.meowmedia.data.Posts
+import com.lukasandchristine.meowmedia.data.Users
 import com.lukasandchristine.meowmedia.databinding.ActivityReelsBinding
 
 
 class ReelsActivity : AppCompatActivity() {
     companion object {
         const val TAG = "ReelsActivity"
+        const val EXTRA_USER = "EXTRA_USER"
     }
 
     private lateinit var binding: ActivityReelsBinding
+    private var userObject: Users? = Users()
     private lateinit var postsList: List<Posts>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityReelsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        loadPosts()
-        refreshList()
-        setListeners()
+        userObject = intent.getParcelableExtra(MakePostActivity.EXTRA_USER)
+
+        getPosts()
     }
 
     private fun setListeners() {
@@ -49,6 +52,25 @@ class ReelsActivity : AppCompatActivity() {
                 }
             )
         )
+
+        binding.imageButtonReelsHome.setOnClickListener{
+            val intent = Intent(this, MainActivity::class.java).apply {
+                putExtra(MainActivity.EXTRA_USER, userObject)
+            }
+            startActivity(intent)
+        }
+        binding.imageButtonReelsAdd.setOnClickListener {
+            val intent = Intent(this, MakePostActivity::class.java).apply {
+                putExtra(MakePostActivity.EXTRA_USER, userObject)
+            }
+            startActivity(intent)
+        }
+        binding.imageButtonReelsProfile.setOnClickListener {
+            val intent = Intent(this, ProfilePageActivity::class.java).apply {
+                putExtra(ProfilePageActivity.EXTRA_USER, userObject)
+            }
+            startActivity(intent)
+        }
     }
 
     private fun refreshList() {
@@ -62,7 +84,7 @@ class ReelsActivity : AppCompatActivity() {
         postListAdapter.notifyDataSetChanged()
     }
 
-    private fun loadPosts() {
+    private fun getPosts() {
         val userId = Backendless.UserService.CurrentUser().userId!!
         val whereClause = "ownerId != '$userId'"
         val queryBuilder = DataQueryBuilder.create()
@@ -71,14 +93,33 @@ class ReelsActivity : AppCompatActivity() {
         Backendless.Data.of(Posts::class.java).find(queryBuilder, object:
             AsyncCallback<List<Posts>> {
             override fun handleResponse(postList: List<Posts>?) {
-                Log.d(MainActivity.TAG, "handleResponse: $postList")
+                Log.d(MainActivity.TAG, "handleResponse getPosts: $postList")
                 postsList = postList!!.filter{
                     it.isVideo
                 }
+                refreshList()
+                setListeners()
             }
 
             override fun handleFault(fault: BackendlessFault) {
-                Log.d(MainActivity.TAG, "handleFault: Code ${fault.code}\n${fault.detail}")
+                Log.d(MainActivity.TAG, "handleFault getPosts: Code ${fault.code}\n${fault.detail}")
+            }
+        })
+    }
+
+    private fun getUserInfo() {
+        val userId = Backendless.UserService.CurrentUser().userId!!
+        val whereClause = "ownerId = '$userId'"
+        val queryBuilder = DataQueryBuilder.create()
+        queryBuilder.whereClause = whereClause
+        Backendless.Data.of(Users::class.java).find(queryBuilder, object: AsyncCallback<List<Users>> {
+            override fun handleResponse(userList: List<Users>?) {
+                Log.d(MainActivity.TAG, "handleResponse getUserInfo: $userList")
+                userObject = userList?.get(0)!!
+            }
+
+            override fun handleFault(fault: BackendlessFault) {
+                Log.d(MainActivity.TAG, "handleFault getUserInfo: Code ${fault.code}\n${fault.detail}")
             }
         })
     }

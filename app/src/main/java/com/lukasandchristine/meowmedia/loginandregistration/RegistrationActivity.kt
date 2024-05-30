@@ -10,7 +10,10 @@ import com.backendless.Backendless
 import com.backendless.BackendlessUser
 import com.backendless.async.callback.AsyncCallback
 import com.backendless.exceptions.BackendlessFault
+import com.backendless.persistence.DataQueryBuilder
 import com.lukasandchristine.meowmedia.Constants
+import com.lukasandchristine.meowmedia.MainActivity
+import com.lukasandchristine.meowmedia.data.Users
 import com.lukasandchristine.meowmedia.databinding.ActivityRegistrationBinding
 
 class RegistrationActivity : AppCompatActivity() {
@@ -49,7 +52,7 @@ class RegistrationActivity : AppCompatActivity() {
 
                 Backendless.UserService.register(user, object: AsyncCallback<BackendlessUser?> {
                     override fun handleResponse(registeredUser: BackendlessUser?) {
-                        Log.d(TAG, "handleResponse: ${registeredUser?.getProperty("username")} has registered.")
+                        Log.d(TAG, "handleResponse RegistrationActivity: ${registeredUser?.getProperty("username")} has registered.")
 
                         val resultIntent = Intent().apply {
                             putExtra(LoginActivity.EXTRA_PASSWORD, password)
@@ -60,7 +63,7 @@ class RegistrationActivity : AppCompatActivity() {
                     }
 
                     override fun handleFault(fault: BackendlessFault) {
-                        Log.d(TAG, "handleFault: Code ${fault.code}\n${fault.detail}")
+                        Log.d(TAG, "handleFault RegistrationActivity: Code ${fault.code}\n${fault.detail}")
                         Toast.makeText(this@RegistrationActivity, fault.message, Toast.LENGTH_LONG).show()
                     }
                 })
@@ -69,22 +72,39 @@ class RegistrationActivity : AppCompatActivity() {
     }
 
     private fun validateFields(email: String, username: String, password: String, confirm: String): Boolean {
-        val validateEmail = RegistrationUtil.validateEmail(email)
-        val validateUsername = RegistrationUtil.validateUsername(username)
-        val validatePassword = RegistrationUtil.validatePassword(password, confirm)
+        when {
+            !RegistrationUtil.validateEmail(email) -> {
+                Toast.makeText(this, "Invalid Email!", Toast.LENGTH_SHORT).show()
+                return false
+            }
+            !RegistrationUtil.validateUsername(username) -> {
+                Toast.makeText(this, "Invalid Username!", Toast.LENGTH_SHORT).show()
+                return false
+            }
+            !RegistrationUtil.validatePassword(password, confirm) -> {
+                Toast.makeText(this, "Invalid Password!", Toast.LENGTH_SHORT).show()
+                return false
+            }
+            else -> {
+                var containsUsername = false
+                val queryBuilder = DataQueryBuilder.create()
+                queryBuilder.whereClause = "username = '$username'"
+                Backendless.Data.of(Users::class.java).find(queryBuilder, object: AsyncCallback<List<Users>> {
+                    override fun handleResponse(userList: List<Users>?) {
+                        Log.d(MainActivity.TAG, "handleResponse validateFields: $userList")
+                        if(userList!![0].username == username) {
+                            containsUsername = true
+                            Toast.makeText(this@RegistrationActivity, "Username already exists!", Toast.LENGTH_SHORT).show()
+                            return
+                        }
+                    }
 
-        if(!validateEmail) {
-            Toast.makeText(this, "Invalid Email!", Toast.LENGTH_SHORT).show()
-            return false
+                    override fun handleFault(fault: BackendlessFault) {
+                        Log.d(TAG, "handleFault validateFields: Code ${fault.code}\n${fault.detail}")
+                    }
+                })
+                return containsUsername
+            }
         }
-        if(!validateUsername) {
-            Toast.makeText(this, "Invalid Username!", Toast.LENGTH_SHORT).show()
-            return false
-        }
-        if(!validatePassword) {
-            Toast.makeText(this, "Invalid Password!", Toast.LENGTH_SHORT).show()
-            return false
-        }
-        return true
     }
 }

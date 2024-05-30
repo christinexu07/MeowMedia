@@ -1,5 +1,6 @@
 package com.lukasandchristine.meowmedia
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -7,6 +8,8 @@ import com.backendless.Backendless
 import com.backendless.async.callback.AsyncCallback
 import com.backendless.exceptions.BackendlessFault
 import com.backendless.persistence.DataQueryBuilder
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.lukasandchristine.meowmedia.data.Posts
 import com.lukasandchristine.meowmedia.data.Users
 import com.lukasandchristine.meowmedia.databinding.ActivityProfilePageBinding
@@ -15,49 +18,65 @@ import com.squareup.picasso.Picasso
 class ProfilePageActivity : AppCompatActivity() {
     companion object {
         const val TAG = "ProfilePageActivity"
-        const val CLICKED_USER_ID = "EXTRA_USER_ID"
+        const val EXTRA_USER = "EXTRA_USER"
     }
 
     private lateinit var binding: ActivityProfilePageBinding
-    private lateinit var userObject: Users
+    private var userObject: Users? = Users()
     private lateinit var posts: List<Posts>
-    private var isSelf: Boolean = false
-    private lateinit var userId: String
+    private var userId: String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProfilePageBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        Backendless.initApp(this, Constants.APPLICATION_ID, Constants.API_KEY)
 
-        getPosts()
-
-        userId = if(isSelf) {
-            Backendless.UserService.CurrentUser().userId!!
-
+        userObject = intent.getParcelableExtra(MakePostActivity.EXTRA_USER)
+        if(userObject == null) {
+            getUserInfo()
         } else {
-            intent.getStringExtra(CLICKED_USER_ID)!!
+            getPosts()
         }
+    }
+
+    private fun setListeners() {
+        userId = Backendless.UserService.CurrentUser().userId!!
         getUserInfo()
-        setFields()
+        binding.imageButtonProfilePageHome.setOnClickListener{
+            val intent = Intent(this, MainActivity::class.java).apply {
+                putExtra(MainActivity.EXTRA_USER, userObject)
+            }
+            startActivity(intent)
+        }
+        binding.imageButtonProfilePageAdd.setOnClickListener {
+            val intent = Intent(this, MakePostActivity::class.java).apply {
+                putExtra(MakePostActivity.EXTRA_USER, userObject)
+            }
+            startActivity(intent)
+        }
+        binding.imageButtonProfilePageReels.setOnClickListener {
+            val intent = Intent(this, ReelsActivity::class.java).apply {
+                putExtra(ReelsActivity.EXTRA_USER, userObject)
+            }
+            startActivity(intent)
+        }
     }
 
     private fun setFields() {
-        binding.textViewProfilePageTitle.text = userObject.username
+        binding.textViewProfilePageTitle.text = userObject?.username
         binding.textViewProfilePagePostCount.text = posts.size.toString()
-        binding.textViewProfilePageFollowerCount.text = userObject.followerCount.toString()
-        binding.textViewProfilePageFollowingCount.text = userObject.followingCount.toString()
-        binding.textViewProfilePageDescription.text = userObject.profileDescription
+        binding.textViewProfilePageFollowerCount.text = userObject?.followerCount.toString()
+        binding.textViewProfilePageFollowingCount.text = userObject?.followingCount.toString()
+        binding.textViewProfilePageDescription.text = userObject?.profileDescription
 
-        if(userObject.profilePicture == "") {
-            Picasso
-                .get()
+        if(userObject?.profilePicture == null) {
+            Glide
+                .with(this)
                 .load("https://stockyteaching-us.backendless.app/api/files/Profile%20Pictures/default_pfp.png")
-                .into(binding.imageViewProfilePageProfilePicture)
+                .apply(RequestOptions.circleCropTransform()).into(binding.imageViewProfilePageProfilePicture)
         } else {
-            Picasso
-                .get()
-                .load("https://stockyteaching-us.backendless.app/api/files/Profile%20Pictures/${userObject.username}.png")
-                .into(binding.imageViewProfilePageProfilePicture)
+            Glide.with(this)
+                .load("https://stockyteaching-us.backendless.app/api/files/Profile%20Pictures/${userObject?.username}.png")
+                .apply(RequestOptions.circleCropTransform()).into(binding.imageViewProfilePageProfilePicture)
         }
 
         Picasso
@@ -105,28 +124,31 @@ class ProfilePageActivity : AppCompatActivity() {
         queryBuilder.whereClause = whereClause
         Backendless.Data.of(Posts::class.java).find(queryBuilder, object: AsyncCallback<List<Posts>> {
             override fun handleResponse(postList: List<Posts>?) {
-                Log.d(MainActivity.TAG, "handleResponse: $postList")
+                Log.d(MainActivity.TAG, "handleResponse getPosts: $postList")
                 posts = postList!!
+                setListeners()
+                setFields()
             }
 
             override fun handleFault(fault: BackendlessFault) {
-                Log.d(MainActivity.TAG, "handleFault: Code ${fault.code}\n${fault.detail}")
+                Log.d(MainActivity.TAG, "handleFault getPosts: Code ${fault.code}\n${fault.detail}")
             }
         })
     }
 
     private fun getUserInfo() {
+        userId = Backendless.UserService.CurrentUser().userId!!
         val whereClause = "ownerId = '$userId'"
         val queryBuilder = DataQueryBuilder.create()
         queryBuilder.whereClause = whereClause
         Backendless.Data.of(Users::class.java).find(queryBuilder, object: AsyncCallback<List<Users>> {
             override fun handleResponse(userList: List<Users>?) {
-                Log.d(MainActivity.TAG, "handleResponse: $userList")
+                Log.d(MainActivity.TAG, "handleResponse getUserInfo: $userList")
                 userObject = userList?.get(0)!!
             }
 
             override fun handleFault(fault: BackendlessFault) {
-                Log.d(MainActivity.TAG, "handleFault: Code ${fault.code}\n${fault.detail}")
+                Log.d(MainActivity.TAG, "handleFault getUserInfo: Code ${fault.code}\n${fault.detail}")
             }
         })
     }

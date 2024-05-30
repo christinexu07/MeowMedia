@@ -10,6 +10,7 @@ data class Users(
     var followingCount: Int = 0,
     var postsList: List<Posts>? = null,
     var profileDescription: String? = "",
-    var profilePicture: String = "",
+    var profilePicture: String? = "",
     var username: String? = null,
+    var ownerId: String? = null
 ): Parcelable
