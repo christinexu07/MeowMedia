@@ -12,5 +12,6 @@ data class Users(
     var profileDescription: String? = "",
     var profilePicture: String? = "",
     var username: String? = null,
-    var ownerId: String? = null
+    var ownerId: String? = null,
+    var followingList: List<Users>? = null,
 ): Parcelable

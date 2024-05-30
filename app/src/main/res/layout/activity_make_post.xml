@@ -26,7 +26,7 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_end="357dp" />
 
-    <TextView
+    <EditText
         android:id="@+id/textView_makePost_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -42,7 +42,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView_makePost_content" />
 
-    <TextView
+    <EditText
         android:id="@+id/textView_makePost_description"
         android:layout_width="0dp"
         android:layout_height="0dp"

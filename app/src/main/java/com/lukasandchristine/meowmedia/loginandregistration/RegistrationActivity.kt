@@ -27,8 +27,6 @@ class RegistrationActivity : AppCompatActivity() {
         binding = ActivityRegistrationBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        Backendless.initApp(this, Constants.APPLICATION_ID, Constants.API_KEY)
-
         val username = intent.getStringExtra(LoginActivity.EXTRA_USERNAME) ?: ""
         val password = intent.getStringExtra(LoginActivity.EXTRA_PASSWORD) ?: ""
 

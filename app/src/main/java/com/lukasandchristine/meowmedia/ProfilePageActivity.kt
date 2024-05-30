@@ -50,18 +50,21 @@ class ProfilePageActivity : AppCompatActivity() {
                 putExtra(MainActivity.EXTRA_USER, userObject)
             }
             startActivity(intent)
+            finish()
         }
         binding.imageButtonProfilePageAdd.setOnClickListener {
             val intent = Intent(this, MakePostActivity::class.java).apply {
                 putExtra(MakePostActivity.EXTRA_USER, userObject)
             }
             startActivity(intent)
+            finish()
         }
         binding.imageButtonProfilePageReels.setOnClickListener {
             val intent = Intent(this, ReelsActivity::class.java).apply {
                 putExtra(ReelsActivity.EXTRA_USER, userObject)
             }
             startActivity(intent)
+            finish()
         }
     }
     private fun abbreviateNum(num: Int): String{
@@ -162,6 +165,7 @@ class ProfilePageActivity : AppCompatActivity() {
             override fun handleResponse(userList: List<Users>?) {
                 Log.d(MainActivity.TAG, "handleResponse getUserInfo: $userList")
                 userObject = userList?.get(0)!!
+                getPosts()
             }
 
             override fun handleFault(fault: BackendlessFault) {

@@ -58,18 +58,21 @@ class ReelsActivity : AppCompatActivity() {
                 putExtra(MainActivity.EXTRA_USER, userObject)
             }
             startActivity(intent)
+            finish()
         }
         binding.imageButtonReelsAdd.setOnClickListener {
             val intent = Intent(this, MakePostActivity::class.java).apply {
                 putExtra(MakePostActivity.EXTRA_USER, userObject)
             }
             startActivity(intent)
+            finish()
         }
         binding.imageButtonReelsProfile.setOnClickListener {
             val intent = Intent(this, ProfilePageActivity::class.java).apply {
                 putExtra(ProfilePageActivity.EXTRA_USER, userObject)
             }
             startActivity(intent)
+            finish()
         }
     }
 

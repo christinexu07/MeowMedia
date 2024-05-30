@@ -18,6 +18,9 @@ import com.backendless.persistence.DataQueryBuilder
 import com.lukasandchristine.meowmedia.data.Posts
 import com.lukasandchristine.meowmedia.data.Users
 import com.lukasandchristine.meowmedia.databinding.ActivityMakePostBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class MakePostActivity : AppCompatActivity() {
@@ -29,6 +32,32 @@ class MakePostActivity : AppCompatActivity() {
     private var userObject: Users? = Users()
     private var postCount: Int = 0
     private var isVideo = false
+    private val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+        if (uri != null) {
+            Log.d("PhotoPicker", "Selected URI: $uri")
+            val cr = this.contentResolver
+            val mime = cr.getType(uri)!!
+            if(mime.startsWith("image")) {
+                binding.videoViewMakePostContent.visibility = View.GONE
+                binding.imageViewMakePostContent.visibility = View.VISIBLE
+                isVideo = false
+                val bitmap: Bitmap = MediaStore.Images.Media.getBitmap(
+                    contentResolver, Uri.parse(
+                        uri.toString()
+                    ))
+                binding.imageViewMakePostContent.setImageBitmap(bitmap)
+            }
+            if(mime.startsWith("video")) {
+                binding.videoViewMakePostContent.visibility = View.VISIBLE
+                binding.imageViewMakePostContent.visibility = View.GONE
+                isVideo = true
+                binding.videoViewMakePostContent.setVideoPath(uri.path)
+                binding.videoViewMakePostContent.start()
+            }
+        } else {
+            Log.d("PhotoPicker", "No media selected")
+        }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMakePostBinding.inflate(layoutInflater)
@@ -63,30 +92,39 @@ class MakePostActivity : AppCompatActivity() {
                 putExtra(MainActivity.EXTRA_USER, userObject)
             }
             startActivity(intent)
+            finish()
         }
         binding.imageButtonMakePostReels.setOnClickListener {
             val intent = Intent(this, ReelsActivity::class.java).apply {
                 putExtra(ReelsActivity.EXTRA_USER, userObject)
             }
             startActivity(intent)
+            finish()
         }
         binding.imageButtonMakePostProfile.setOnClickListener {
             val intent = Intent(this, ProfilePageActivity::class.java).apply {
                 putExtra(ProfilePageActivity.EXTRA_USER, userObject)
             }
             startActivity(intent)
+            finish()
         }
     }
 
     private fun uploadContent() {
         val photo: Bitmap = binding.imageViewMakePostContent.drawable.toBitmap()
-        Backendless.Files.Android.upload(
-            photo,
-            Bitmap.CompressFormat.PNG,
-            100,
-            "${userObject?.username}_${postCount + 1}.png",
-            "Posts"
-        )
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                Backendless.Files.Android.upload(
+                    photo,
+                    Bitmap.CompressFormat.PNG,
+                    100,
+                    "${userObject?.username}_${postCount + 1}.png",
+                    "Posts"
+                )
+            } catch (e: Exception) {
+                throw e
+            }
+        }
     }
 
     private fun makePost() {
@@ -109,33 +147,7 @@ class MakePostActivity : AppCompatActivity() {
     }
 
     private fun chooseContent() {
-        val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-            if (uri != null) {
-                Log.d("PhotoPicker", "Selected URI: $uri")
-                val cr = this.contentResolver
-                val mime = cr.getType(uri)!!
-                if(mime.startsWith("image")) {
-                    binding.videoViewMakePostContent.visibility = View.GONE
-                    binding.imageViewMakePostContent.visibility = View.VISIBLE
-                    isVideo = false
-                    val bitmap: Bitmap = MediaStore.Images.Media.getBitmap(
-                        contentResolver, Uri.parse(
-                            uri.toString()
-                        ))
-                    binding.imageViewMakePostContent.setImageBitmap(bitmap)
-                }
-                if(mime.startsWith("video")) {
-                    binding.videoViewMakePostContent.visibility = View.VISIBLE
-                    binding.imageViewMakePostContent.visibility = View.GONE
-                    isVideo = true
-                    binding.videoViewMakePostContent.setVideoPath(uri.path)
-                    binding.videoViewMakePostContent.start()
-                }
-            } else {
-                Log.d("PhotoPicker", "No media selected")
-            }
-        }
-        pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+        pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageAndVideo))
     }
 
     private fun getUserInfo() {

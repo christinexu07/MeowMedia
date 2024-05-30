@@ -43,18 +43,21 @@ class MainActivity : AppCompatActivity() {
                 putExtra(MakePostActivity.EXTRA_USER, userObject)
             }
             startActivity(intent)
+            finish()
         }
         binding.imageButtonMainReels.setOnClickListener {
             val intent = Intent(this, ReelsActivity::class.java).apply {
                 putExtra(ReelsActivity.EXTRA_USER, userObject)
             }
             startActivity(intent)
+            finish()
         }
         binding.imageButtonMainProfile.setOnClickListener {
             val intent = Intent(this, ProfilePageActivity::class.java).apply {
                 putExtra(ProfilePageActivity.EXTRA_USER, userObject)
             }
             startActivity(intent)
+            finish()
         }
     }
 
