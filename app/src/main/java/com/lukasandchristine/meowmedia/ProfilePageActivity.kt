@@ -15,13 +15,14 @@ import com.squareup.picasso.Picasso
 class ProfilePageActivity : AppCompatActivity() {
     companion object {
         const val TAG = "ProfilePageActivity"
+        const val CLICKED_USER_ID = "EXTRA_USER_ID"
     }
 
     private lateinit var binding: ActivityProfilePageBinding
     private lateinit var userObject: Users
     private lateinit var posts: List<Posts>
     private var isSelf: Boolean = false
-    private lateinit var clickedUserId: String
+    private lateinit var userId: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProfilePageBinding.inflate(layoutInflater)
@@ -29,20 +30,18 @@ class ProfilePageActivity : AppCompatActivity() {
         Backendless.initApp(this, Constants.APPLICATION_ID, Constants.API_KEY)
 
         getPosts()
-        if(isSelf) {
-            getSelfInfo()
-            setSelfFields()
+
+        userId = if(isSelf) {
+            Backendless.UserService.CurrentUser().userId!!
+
         } else {
-            getUserInfo()
-            setFields()
+            intent.getStringExtra(CLICKED_USER_ID)!!
         }
+        getUserInfo()
+        setFields()
     }
 
     private fun setFields() {
-
-    }
-
-    private fun setSelfFields() {
         binding.textViewProfilePageTitle.text = userObject.username
         binding.textViewProfilePagePostCount.text = posts.size.toString()
         binding.textViewProfilePageFollowerCount.text = userObject.followerCount.toString()
@@ -100,13 +99,11 @@ class ProfilePageActivity : AppCompatActivity() {
     }
 
     private fun getPosts() {
-        val userId = Backendless.UserService.CurrentUser().userId!!
         val whereClause = "ownerId = '$userId'"
         val queryBuilder = DataQueryBuilder.create()
         queryBuilder.setPageSize(25)
         queryBuilder.whereClause = whereClause
-        Backendless.Data.of(Posts::class.java).find(queryBuilder, object:
-            AsyncCallback<List<Posts>> {
+        Backendless.Data.of(Posts::class.java).find(queryBuilder, object: AsyncCallback<List<Posts>> {
             override fun handleResponse(postList: List<Posts>?) {
                 Log.d(MainActivity.TAG, "handleResponse: $postList")
                 posts = postList!!
@@ -119,11 +116,6 @@ class ProfilePageActivity : AppCompatActivity() {
     }
 
     private fun getUserInfo() {
-
-    }
-
-    private fun getSelfInfo() {
-        val userId = Backendless.UserService.CurrentUser().userId!!
         val whereClause = "ownerId = '$userId'"
         val queryBuilder = DataQueryBuilder.create()
         queryBuilder.whereClause = whereClause

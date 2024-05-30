@@ -101,6 +101,7 @@ class MakePostActivity : AppCompatActivity() {
                     binding.imageViewMakePostContent.isVisible = false
                     isVideo = true
                     binding.videoViewMakePostContent.setVideoPath(uri.path)
+                    binding.videoViewMakePostContent.start()
                 }
             } else {
                 Log.d("PhotoPicker", "No media selected")
