@@ -10,7 +10,6 @@ import android.view.View
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.Image
 import androidx.core.graphics.drawable.toBitmap
 import com.backendless.Backendless
 import com.backendless.async.callback.AsyncCallback

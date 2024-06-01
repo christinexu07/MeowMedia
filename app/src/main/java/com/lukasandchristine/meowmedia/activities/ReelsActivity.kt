@@ -12,11 +12,11 @@ import com.backendless.Backendless
 import com.backendless.async.callback.AsyncCallback
 import com.backendless.exceptions.BackendlessFault
 import com.backendless.persistence.DataQueryBuilder
-import com.lukasandchristine.meowmedia.misc.DoubleClickListener
 import com.lukasandchristine.meowmedia.adapters.ReelsAdapter
 import com.lukasandchristine.meowmedia.data.Posts
 import com.lukasandchristine.meowmedia.data.Users
 import com.lukasandchristine.meowmedia.databinding.ActivityReelsBinding
+import com.lukasandchristine.meowmedia.misc.DoubleClickListener
 
 
 class ReelsActivity : AppCompatActivity() {

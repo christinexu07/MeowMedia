@@ -20,11 +20,13 @@ import kotlin.math.pow
 class PostActivity : AppCompatActivity() {
     companion object {
         const val TAG = "PostActivity"
+        const val EXTRA_USER = "EXTRA_USER"
         const val EXTRA_POST = "EXTRA_POST"
     }
 
     private lateinit var binding: ActivityPostBinding
     private lateinit var post: Posts
+    private lateinit var postAuthor: Users
     private lateinit var userObject: Users
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,7 +40,8 @@ class PostActivity : AppCompatActivity() {
         binding.buttonPostUnfollow.visibility = View.GONE
         binding.buttonPostFollow.visibility = View.VISIBLE
 
-        getUserInfo()
+        userObject = intent.getParcelableExtra(EXTRA_USER)!!
+        getAuthorInfo()
     }
 
     private fun setListeners() {
@@ -68,12 +71,16 @@ class PostActivity : AppCompatActivity() {
     }
 
     private fun addFollow() {
-        userObject.followerCount++
+        postAuthor.followerCount++
+        updatePostAuthorRecord()
+        userObject.followingCount++
         updateUserRecord()
     }
 
     private fun removeFollow() {
-        userObject.followerCount--
+        postAuthor.followerCount--
+        updatePostAuthorRecord()
+        userObject.followingCount--
         updateUserRecord()
     }
 
@@ -102,6 +109,35 @@ class PostActivity : AppCompatActivity() {
             }
             override fun handleFault(fault: BackendlessFault) {
                 Log.d(TAG, "handleFault updateUserRecord: Code ${fault.code}\n${fault.detail}")
+            }
+        })
+    }
+
+    private fun updatePostAuthorRecord() {
+        Backendless.Data.of(Users::class.java).save(postAuthor, object: AsyncCallback<Users> {
+            override fun handleResponse(savedUser: Users) {
+                savedUser.email = postAuthor.email
+                savedUser.followerCount = postAuthor.followerCount
+                savedUser.followingCount = postAuthor.followingCount
+                savedUser.postsList = postAuthor.postsList
+                savedUser.profileDescription = postAuthor.profileDescription
+                savedUser.profilePicture = postAuthor.profilePicture
+                savedUser.username = postAuthor.username
+                savedUser.ownerId = postAuthor.ownerId
+                savedUser.followingList = postAuthor.followingList
+                Backendless.Data.of(Users::class.java)
+                    .save(savedUser, object: AsyncCallback<Users?> {
+                        override fun handleResponse(response: Users?) {
+                            Log.d(TAG, "handleResponse updatePostAuthorRecord: successful update")
+                        }
+
+                        override fun handleFault(fault: BackendlessFault) {
+                            Log.d(TAG, "handleFault updatePostAuthorRecord: Code ${fault.code}\n${fault.detail}")
+                        }
+                    })
+            }
+            override fun handleFault(fault: BackendlessFault) {
+                Log.d(TAG, "handleFault updatePostAuthorRecord: Code ${fault.code}\n${fault.detail}")
             }
         })
     }
@@ -146,7 +182,7 @@ class PostActivity : AppCompatActivity() {
     }
 
     private fun setFields() {
-        binding.textViewPostUsername.text = userObject.username
+        binding.textViewPostUsername.text = postAuthor.username
         binding.textViewPostTitle.text = post.postTitle
         binding.textViewPostDescription.text = post.postDescription
         binding.textViewPostLikeCount.text = abbreviateNum(post.likeCount)
@@ -155,7 +191,7 @@ class PostActivity : AppCompatActivity() {
             .into(binding.imageViewPostContent)
     }
 
-    private fun getUserInfo() {
+    private fun getAuthorInfo() {
         val userId = post.ownerId
         val whereClause = "ownerId = '$userId'"
         val queryBuilder = DataQueryBuilder.create()
@@ -164,7 +200,7 @@ class PostActivity : AppCompatActivity() {
             AsyncCallback<List<Users>> {
             override fun handleResponse(userList: List<Users>?) {
                 Log.d(TAG, "handleResponse getUserInfo: $userList")
-                userObject = userList?.get(0)!!
+                postAuthor = userList?.get(0)!!
                 setFields()
                 setListeners()
             }

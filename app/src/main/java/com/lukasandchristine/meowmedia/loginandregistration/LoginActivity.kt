@@ -2,18 +2,18 @@ package com.lukasandchristine.meowmedia.loginandregistration
 
 import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import com.backendless.Backendless
 import com.backendless.BackendlessUser
 import com.backendless.async.callback.AsyncCallback
 import com.backendless.exceptions.BackendlessFault
-import com.lukasandchristine.meowmedia.misc.Constants
 import com.lukasandchristine.meowmedia.activities.MainActivity
 import com.lukasandchristine.meowmedia.databinding.ActivityLoginBinding
+import com.lukasandchristine.meowmedia.misc.Constants
 
 class LoginActivity : AppCompatActivity() {
     companion object {
