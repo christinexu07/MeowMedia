@@ -25,23 +25,38 @@ class PostActivity : AppCompatActivity() {
     }
 
     private lateinit var binding: ActivityPostBinding
-    private lateinit var post: Posts
+    private var post: Posts? = null
+    private var userObject: Users? = null
     private lateinit var postAuthor: Users
-    private lateinit var userObject: Users
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPostBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        post = intent.getParcelableExtra(EXTRA_POST)!!
 
         binding.imageViewPostFilledHeart.visibility = View.GONE
         binding.imageViewPostHollowHeart.visibility = View.VISIBLE
         binding.buttonPostUnfollow.visibility = View.GONE
         binding.buttonPostFollow.visibility = View.VISIBLE
 
-        userObject = intent.getParcelableExtra(EXTRA_USER)!!
-        getAuthorInfo()
+        post = intent.getParcelableExtra(EXTRA_POST)
+        userObject = intent.getParcelableExtra(EXTRA_USER)
+        Log.d(TAG, "onCreate: $post")
+        Log.d(TAG, "onCreate: $userObject")
+
+        if(userObject == null) {
+            getUserInfo()
+        }
+        if(post != null) {
+            getAuthorInfo()
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        updateUserRecord()
+        updatePostAuthorRecord()
+        updatePostRecord()
+        finish()
     }
 
     private fun setListeners() {
@@ -51,51 +66,41 @@ class PostActivity : AppCompatActivity() {
         binding.buttonPostFollow.setOnClickListener {
             binding.buttonPostFollow.visibility = View.GONE
             binding.buttonPostUnfollow.visibility = View.VISIBLE
-            addFollow()
+            postAuthor.followerCount++
+            userObject!!.followingCount++
         }
         binding.buttonPostUnfollow.setOnClickListener {
             binding.buttonPostFollow.visibility = View.VISIBLE
             binding.buttonPostUnfollow.visibility = View.GONE
-            removeFollow()
+            postAuthor.followerCount--
+            userObject!!.followingCount--
         }
         binding.imageViewPostHollowHeart.setOnClickListener {
             binding.imageViewPostFilledHeart.visibility = View.VISIBLE
             binding.imageViewPostHollowHeart.visibility = View.GONE
-            addLike()
+            post!!.likeCount++
+            binding.textViewPostLikeCount.text = abbreviateNum(post!!.likeCount)
         }
         binding.imageViewPostFilledHeart.setOnClickListener {
             binding.imageViewPostFilledHeart.visibility = View.GONE
             binding.imageViewPostHollowHeart.visibility = View.VISIBLE
-            removeLike()
+            post!!.likeCount--
+            binding.textViewPostLikeCount.text = abbreviateNum(post!!.likeCount)
         }
-    }
-
-    private fun addFollow() {
-        postAuthor.followerCount++
-        updatePostAuthorRecord()
-        userObject.followingCount++
-        updateUserRecord()
-    }
-
-    private fun removeFollow() {
-        postAuthor.followerCount--
-        updatePostAuthorRecord()
-        userObject.followingCount--
-        updateUserRecord()
     }
 
     private fun updateUserRecord() {
         Backendless.Data.of(Users::class.java).save(userObject, object: AsyncCallback<Users> {
             override fun handleResponse(savedUser: Users) {
-                savedUser.email = userObject.email
-                savedUser.followerCount = userObject.followerCount
-                savedUser.followingCount = userObject.followingCount
-                savedUser.postsList = userObject.postsList
-                savedUser.profileDescription = userObject.profileDescription
-                savedUser.profilePicture = userObject.profilePicture
-                savedUser.username = userObject.username
-                savedUser.ownerId = userObject.ownerId
-                savedUser.followingList = userObject.followingList
+                savedUser.email = userObject!!.email
+                savedUser.followerCount = userObject!!.followerCount
+                savedUser.followingCount = userObject!!.followingCount
+                savedUser.postsList = userObject!!.postsList
+                savedUser.profileDescription = userObject!!.profileDescription
+                savedUser.profilePicture = userObject!!.profilePicture
+                savedUser.username = userObject!!.username
+                savedUser.ownerId = userObject!!.ownerId
+                savedUser.followingList = userObject!!.followingList
                 Backendless.Data.of(Users::class.java)
                     .save(savedUser, object: AsyncCallback<Users?> {
                         override fun handleResponse(response: Users?) {
@@ -145,13 +150,13 @@ class PostActivity : AppCompatActivity() {
     private fun updatePostRecord() {
         Backendless.Data.of(Posts::class.java).save(post, object: AsyncCallback<Posts> {
             override fun handleResponse(savedPost: Posts) {
-                savedPost.ownerId = post.ownerId
-                savedPost.postTitle = post.postTitle
-                savedPost.postDescription = post.postDescription
-                savedPost.postContent = post.postContent
-                savedPost.isVideo = post.isVideo
-                savedPost.likeCount = post.likeCount
-                savedPost.comments = post.comments
+                savedPost.ownerId = post!!.ownerId
+                savedPost.postTitle = post!!.postTitle
+                savedPost.postDescription = post!!.postDescription
+                savedPost.postContent = post!!.postContent
+                savedPost.isVideo = post!!.isVideo
+                savedPost.likeCount = post!!.likeCount
+                savedPost.comments = post!!.comments
                 Backendless.Data.of(Posts::class.java)
                     .save(savedPost, object : AsyncCallback<Posts?> {
                         override fun handleResponse(response: Posts?) {
@@ -169,30 +174,18 @@ class PostActivity : AppCompatActivity() {
         })
     }
 
-    private fun addLike() {
-        post.likeCount++
-        binding.textViewPostLikeCount.text = abbreviateNum(post.likeCount)
-        updatePostRecord()
-    }
-
-    private fun removeLike() {
-        post.likeCount--
-        binding.textViewPostLikeCount.text = abbreviateNum(post.likeCount)
-        updatePostRecord()
-    }
-
     private fun setFields() {
         binding.textViewPostUsername.text = postAuthor.username
-        binding.textViewPostTitle.text = post.postTitle
-        binding.textViewPostDescription.text = post.postDescription
-        binding.textViewPostLikeCount.text = abbreviateNum(post.likeCount)
+        binding.textViewPostTitle.text = post!!.postTitle
+        binding.textViewPostDescription.text = post!!.postDescription
+        binding.textViewPostLikeCount.text = abbreviateNum(post!!.likeCount)
         Picasso.get()
-            .load(post.postContent)
+            .load(post!!.postContent)
             .into(binding.imageViewPostContent)
     }
 
     private fun getAuthorInfo() {
-        val userId = post.ownerId
+        val userId = post!!.ownerId
         val whereClause = "ownerId = '$userId'"
         val queryBuilder = DataQueryBuilder.create()
         queryBuilder.whereClause = whereClause
@@ -221,5 +214,22 @@ class PostActivity : AppCompatActivity() {
         } else {
             DecimalFormat("#,##0").format(numValue)
         }
+    }
+
+    private fun getUserInfo() {
+        val userId = Backendless.UserService.CurrentUser().userId!!
+        val whereClause = "ownerId = '$userId'"
+        val queryBuilder = DataQueryBuilder.create()
+        queryBuilder.whereClause = whereClause
+        Backendless.Data.of(Users::class.java).find(queryBuilder, object: AsyncCallback<List<Users>> {
+            override fun handleResponse(userList: List<Users>?) {
+                Log.d(TAG, "handleResponse getUserInfo: $userList")
+                userObject = userList?.get(0)!!
+            }
+
+            override fun handleFault(fault: BackendlessFault) {
+                Log.d(TAG, "handleFault getUserInfo: Code ${fault.code}\n${fault.detail}")
+            }
+        })
     }
 }

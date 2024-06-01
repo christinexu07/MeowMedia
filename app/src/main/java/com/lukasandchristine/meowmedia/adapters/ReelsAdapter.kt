@@ -16,8 +16,8 @@ class ReelsAdapter(private var postsList: List<Posts>): RecyclerView.Adapter<Ree
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val imageViewReel: ImageView = view.findViewById(R.id.imageView_itemReel_image)
-        val videoViewReel: VideoView = view.findViewById(R.id.videoView_itemReel_video)
+        val imageViewReel: ImageView = view.findViewById(R.id.imageView_itemPost_image)
+        val videoViewReel: VideoView = view.findViewById(R.id.videoView_itemPost_video)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

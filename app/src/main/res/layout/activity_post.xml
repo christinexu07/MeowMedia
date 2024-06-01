@@ -5,6 +5,7 @@
     android:id="@+id/layout_post"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/creme"
     android:textAlignment="center"
     tools:context=".activities.PostActivity">
 
@@ -113,12 +114,13 @@
         android:text="Follow"
         android:textAlignment="center"
         android:textColor="@color/darkGreen"
-        android:textSize="18sp"
         android:textColorLink="@color/green"
+        android:textSize="18sp"
         app:cornerRadius="10sp"
         app:iconTint="@color/green"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
         app:layout_constraintTop_toTopOf="@+id/guideline" />
+
     <Button
         android:id="@+id/button_post_unfollow"
         android:layout_width="wrap_content"
@@ -132,8 +134,8 @@
         android:text="Unfollow"
         android:textAlignment="center"
         android:textColor="@color/darkGreen"
-        android:textSize="18sp"
         android:textColorLink="@color/green"
+        android:textSize="18sp"
         app:cornerRadius="10sp"
         app:iconTint="@color/green"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
