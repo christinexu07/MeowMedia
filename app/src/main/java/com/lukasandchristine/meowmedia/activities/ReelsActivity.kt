@@ -44,8 +44,8 @@ class ReelsActivity : AppCompatActivity() {
 
         binding.recyclerViewReelsReels.addOnItemTouchListener(
             DoubleClickListener(
-                onSingleClick = {
-                    // Handle single click
+                onSingleClick = { position ->
+                                
                 },
                 onDoubleClick = { position ->
                     // Handle double click
@@ -97,7 +97,7 @@ class ReelsActivity : AppCompatActivity() {
         Backendless.Data.of(Posts::class.java).find(queryBuilder, object:
             AsyncCallback<List<Posts>> {
             override fun handleResponse(postList: List<Posts>?) {
-                Log.d(MainActivity.TAG, "handleResponse getPosts: $postList")
+                Log.d(TAG, "handleResponse getPosts: $postList")
                 postsList = postList!!.filter{
                     it.isVideo
                 }
@@ -106,7 +106,7 @@ class ReelsActivity : AppCompatActivity() {
             }
 
             override fun handleFault(fault: BackendlessFault) {
-                Log.d(MainActivity.TAG, "handleFault getPosts: Code ${fault.code}\n${fault.detail}")
+                Log.d(TAG, "handleFault getPosts: Code ${fault.code}\n${fault.detail}")
             }
         })
     }
@@ -118,12 +118,12 @@ class ReelsActivity : AppCompatActivity() {
         queryBuilder.whereClause = whereClause
         Backendless.Data.of(Users::class.java).find(queryBuilder, object: AsyncCallback<List<Users>> {
             override fun handleResponse(userList: List<Users>?) {
-                Log.d(MainActivity.TAG, "handleResponse getUserInfo: $userList")
+                Log.d(TAG, "handleResponse getUserInfo: $userList")
                 userObject = userList?.get(0)!!
             }
 
             override fun handleFault(fault: BackendlessFault) {
-                Log.d(MainActivity.TAG, "handleFault getUserInfo: Code ${fault.code}\n${fault.detail}")
+                Log.d(TAG, "handleFault getUserInfo: Code ${fault.code}\n${fault.detail}")
             }
         })
     }

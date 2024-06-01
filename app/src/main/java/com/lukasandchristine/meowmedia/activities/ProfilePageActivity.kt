@@ -43,8 +43,6 @@ class ProfilePageActivity : AppCompatActivity() {
     }
 
     private fun setListeners() {
-        userId = Backendless.UserService.CurrentUser().userId!!
-        getUserInfo()
         binding.imageButtonProfilePageHome.setOnClickListener{
             val intent = Intent(this, MainActivity::class.java).apply {
                 putExtra(MainActivity.EXTRA_USER, userObject)
@@ -62,6 +60,13 @@ class ProfilePageActivity : AppCompatActivity() {
         binding.imageButtonProfilePageReels.setOnClickListener {
             val intent = Intent(this, ReelsActivity::class.java).apply {
                 putExtra(ReelsActivity.EXTRA_USER, userObject)
+            }
+            startActivity(intent)
+            finish()
+        }
+        binding.imageButtonProfilePageSettings.setOnClickListener {
+            val intent = Intent(this, SettingsActivity::class.java).apply {
+                putExtra(SettingsActivity.EXTRA_USER, userObject)
             }
             startActivity(intent)
             finish()
@@ -101,57 +106,41 @@ class ProfilePageActivity : AppCompatActivity() {
 
         Picasso
             .get()
-            .load("https://stockyteaching-us.backendless.app/api/files/Posts/username_${posts.size - 1}.png")
+            .load("https://stockyteaching-us.backendless.app/api/files/Posts/username_${0}.png")
             .into(binding.imageViewProfilePageOne)
-        Picasso
-            .get()
-            .load("https://stockyteaching-us.backendless.app/api/files/Posts/username_${posts.size - 2}.png")
-            .into(binding.imageViewProfilePageTwo)
-        Picasso
-            .get()
-            .load("https://stockyteaching-us.backendless.app/api/files/Posts/username_${posts.size - 3}.png")
-            .into(binding.imageViewProfilePageThree)
-        Picasso
-            .get()
-            .load("https://stockyteaching-us.backendless.app/api/files/Posts/username_${posts.size - 4}.png")
-            .into(binding.imageViewProfilePageFour)
-        Picasso
-            .get()
-            .load("https://stockyteaching-us.backendless.app/api/files/Posts/username_${posts.size - 5}.png")
-            .into(binding.imageViewProfilePageFive)
-        Picasso
-            .get()
-            .load("https://stockyteaching-us.backendless.app/api/files/Posts/username_${posts.size - 6}.png")
-            .into(binding.imageViewProfilePageSix)
-        Picasso
-            .get()
-            .load("https://stockyteaching-us.backendless.app/api/files/Posts/username_${posts.size - 7}.png")
-            .into(binding.imageViewProfilePageSeven)
-        Picasso
-            .get()
-            .load("https://stockyteaching-us.backendless.app/api/files/Posts/username_${posts.size - 8}.png")
-            .into(binding.imageViewProfilePageEight)
-        Picasso
-            .get()
-            .load("https://stockyteaching-us.backendless.app/api/files/Posts/username_${posts.size - 9}.png")
-            .into(binding.imageViewProfilePageNine)
+        for(i in posts.indices) {
+            Picasso.get()
+                .load(posts[i].postContent)
+                .into(when(i) {
+                    0 -> binding.imageViewProfilePageOne
+                    1 -> binding.imageViewProfilePageTwo
+                    2 -> binding.imageViewProfilePageThree
+                    3 -> binding.imageViewProfilePageFour
+                    4 -> binding.imageViewProfilePageFive
+                    5 -> binding.imageViewProfilePageSix
+                    6 -> binding.imageViewProfilePageSeven
+                    7 -> binding.imageViewProfilePageEight
+                    else -> binding.imageViewProfilePageNine
+                })
+        }
     }
 
     private fun getPosts() {
+        userId = userObject?.ownerId!!
         val whereClause = "ownerId = '$userId'"
         val queryBuilder = DataQueryBuilder.create()
-        queryBuilder.setPageSize(25)
+        queryBuilder.setPageSize(9)
         queryBuilder.whereClause = whereClause
         Backendless.Data.of(Posts::class.java).find(queryBuilder, object: AsyncCallback<List<Posts>> {
             override fun handleResponse(postList: List<Posts>?) {
-                Log.d(MainActivity.TAG, "handleResponse getPosts: $postList")
+                Log.d(TAG, "handleResponse getPosts: $postList")
                 posts = postList!!
                 setListeners()
                 setFields()
             }
 
             override fun handleFault(fault: BackendlessFault) {
-                Log.d(MainActivity.TAG, "handleFault getPosts: Code ${fault.code}\n${fault.detail}")
+                Log.d(TAG, "handleFault getPosts: Code ${fault.code}\n${fault.detail}")
             }
         })
     }
@@ -163,13 +152,13 @@ class ProfilePageActivity : AppCompatActivity() {
         queryBuilder.whereClause = whereClause
         Backendless.Data.of(Users::class.java).find(queryBuilder, object: AsyncCallback<List<Users>> {
             override fun handleResponse(userList: List<Users>?) {
-                Log.d(MainActivity.TAG, "handleResponse getUserInfo: $userList")
+                Log.d(TAG, "handleResponse getUserInfo: $userList")
                 userObject = userList?.get(0)!!
                 getPosts()
             }
 
             override fun handleFault(fault: BackendlessFault) {
-                Log.d(MainActivity.TAG, "handleFault getUserInfo: Code ${fault.code}\n${fault.detail}")
+                Log.d(TAG, "handleFault getUserInfo: Code ${fault.code}\n${fault.detail}")
             }
         })
     }

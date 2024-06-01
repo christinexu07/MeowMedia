@@ -10,6 +10,7 @@ import android.view.View
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.Image
 import androidx.core.graphics.drawable.toBitmap
 import com.backendless.Backendless
 import com.backendless.async.callback.AsyncCallback
@@ -72,7 +73,7 @@ class MakePostActivity : AppCompatActivity() {
         }
 
         binding.imageViewMakePostContent.visibility = View.VISIBLE
-        binding.videoViewMakePostContent.visibility = View.VISIBLE
+        binding.videoViewMakePostContent.visibility = View.GONE
     }
 
     private fun setListeners() {
@@ -131,7 +132,12 @@ class MakePostActivity : AppCompatActivity() {
         val post = Posts()
         post.postTitle = binding.textViewMakePostTitle.text.toString()
         post.postDescription = binding.textViewMakePostDescription.text.toString()
-        post.postContent = "https://stockyteaching-us.backendless.app/api/files/Posts/${userObject?.username}_${postCount + 1}"
+        post.ownerId = userObject?.ownerId
+        if(isVideo) {
+            post.postContent = "https://stockyteaching-us.backendless.app/api/files/Posts/${userObject?.username}_${postCount + 1}.mp4"
+        } else {
+            post.postContent = "https://stockyteaching-us.backendless.app/api/files/Posts/${userObject?.username}_${postCount + 1}.png"
+        }
         post.isVideo = isVideo
 
         Backendless.Data.of(Posts::class.java).save(post, object : AsyncCallback<Posts?> {
@@ -147,7 +153,7 @@ class MakePostActivity : AppCompatActivity() {
     }
 
     private fun chooseContent() {
-        pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageAndVideo))
+        pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
     }
 
     private fun getUserInfo() {
@@ -157,7 +163,7 @@ class MakePostActivity : AppCompatActivity() {
         queryBuilder.whereClause = whereClause
         Backendless.Data.of(Users::class.java).find(queryBuilder, object: AsyncCallback<List<Users>> {
             override fun handleResponse(userList: List<Users>?) {
-                Log.d(MainActivity.TAG, "handleResponse getUserInfo: $userList")
+                Log.d(TAG, "handleResponse getUserInfo: $userList")
                 userObject = userList?.get(0)!!
                 postCount = if(userObject?.postsList == null) {
                     0
@@ -168,7 +174,7 @@ class MakePostActivity : AppCompatActivity() {
             }
 
             override fun handleFault(fault: BackendlessFault) {
-                Log.d(MainActivity.TAG, "handleFault getUserInfo: Code ${fault.code}\n${fault.detail}")
+                Log.d(TAG, "handleFault getUserInfo: Code ${fault.code}\n${fault.detail}")
             }
         })
     }

@@ -43,21 +43,18 @@ class MainActivity : AppCompatActivity() {
                 putExtra(MakePostActivity.EXTRA_USER, userObject)
             }
             startActivity(intent)
-            finish()
         }
         binding.imageButtonMainReels.setOnClickListener {
             val intent = Intent(this, ReelsActivity::class.java).apply {
                 putExtra(ReelsActivity.EXTRA_USER, userObject)
             }
             startActivity(intent)
-            finish()
         }
         binding.imageButtonMainProfile.setOnClickListener {
             val intent = Intent(this, ProfilePageActivity::class.java).apply {
                 putExtra(ProfilePageActivity.EXTRA_USER, userObject)
             }
             startActivity(intent)
-            finish()
         }
     }
 
@@ -70,7 +67,7 @@ class MainActivity : AppCompatActivity() {
         postListAdapter.notifyDataSetChanged()
     }
 
-    private fun getPosts() {
+    private fun getOtherPosts() {
         val userId = Backendless.UserService.CurrentUser().userId!!
         val whereClause = "ownerId != '$userId'"
         val queryBuilder = DataQueryBuilder.create()
@@ -78,10 +75,27 @@ class MainActivity : AppCompatActivity() {
         queryBuilder.whereClause = whereClause
         Backendless.Data.of(Posts::class.java).find(queryBuilder, object: AsyncCallback<List<Posts>> {
             override fun handleResponse(postList: List<Posts>?) {
-                Log.d(TAG, "handleResponse getPosts: $postList")
+                Log.d(TAG, "handleResponse getOtherPosts: $postList")
                 postsList = postList!!
                 refreshList()
                 setListeners()
+            }
+
+            override fun handleFault(fault: BackendlessFault) {
+                Log.d(TAG, "handleFault getPosts: Code ${fault.code}\n${fault.detail}")
+            }
+        })
+    }
+
+    private fun getSelfPosts() {
+        val userId = Backendless.UserService.CurrentUser().userId!!
+        val whereClause = "ownerId = '$userId'"
+        val queryBuilder = DataQueryBuilder.create()
+        queryBuilder.whereClause = whereClause
+        Backendless.Data.of(Posts::class.java).find(queryBuilder, object: AsyncCallback<List<Posts>> {
+            override fun handleResponse(postList: List<Posts>?) {
+                Log.d(TAG, "handleResponse getSelfPosts: $postList")
+                userObject?.postsList = postList!!
             }
 
             override fun handleFault(fault: BackendlessFault) {
@@ -99,7 +113,8 @@ class MainActivity : AppCompatActivity() {
             override fun handleResponse(userList: List<Users>?) {
                 Log.d(TAG, "handleResponse getUserInfo: $userList")
                 userObject = userList?.get(0)!!
-                getPosts()
+                getOtherPosts()
+                getSelfPosts()
             }
 
             override fun handleFault(fault: BackendlessFault) {
