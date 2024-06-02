@@ -5,6 +5,7 @@
     android:id="@+id/layout_post"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/creme"
     tools:context=".activities.SettingsActivity">
 
     <ImageView
@@ -28,4 +29,90 @@
         app:layout_constraintStart_toEndOf="@+id/imageView_settings_back"
         app:layout_constraintTop_toTopOf="@+id/imageView_settings_back"
         app:srcCompat="@drawable/title" />
+
+    <TextView
+        android:id="@+id/textView_settings_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="TextView"
+        android:textSize="34sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView_settings_logo"
+        tools:text="Edit Profile" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="175dp"
+        android:layout_height="175dp"
+        android:layout_marginTop="40dp"
+        app:layout_constraintTop_toBottomOf="@+id/textView_settings_title"
+        app:layout_constraintVertical_chainStyle="spread_inside"
+        tools:layout_editor_absoluteX="49dp"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <EditText
+        android:id="@+id/editText_settings_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:backgroundTint="#000000"
+        android:text="TextView"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        tools:text="Username" />
+
+    <EditText
+        android:id="@+id/editText_settings_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="@+id/editText_settings_username"
+        app:layout_constraintTop_toBottomOf="@+id/editText_settings_username"
+        tools:text="Description" />
+
+    <Button
+        android:id="@+id/button_settings_confirmPhoto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toTopOf="@+id/imageView"
+        tools:text="Confirm \nPhoto"
+        android:backgroundTint="@color/blue"
+        android:textColor="@color/darkGreen"
+        android:textSize="16sp"/>
+
+    <Button
+        android:id="@+id/button_settings_confirmUsername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button"
+        app:layout_constraintBottom_toBottomOf="@+id/editText_settings_username"
+        app:layout_constraintEnd_toEndOf="@+id/button_settings_confirmPhoto"
+        app:layout_constraintStart_toStartOf="@+id/button_settings_confirmPhoto"
+        app:layout_constraintTop_toTopOf="@+id/editText_settings_username"
+        tools:text="Confirm\n Username"
+        android:backgroundTint="@color/blue"
+        android:textColor="@color/darkGreen"
+        android:textSize="16sp"/>
+
+    <Button
+        android:id="@+id/button_settings_confirmDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button"
+        app:layout_constraintBottom_toBottomOf="@+id/editText_settings_description"
+        app:layout_constraintEnd_toEndOf="@+id/button_settings_confirmUsername"
+        app:layout_constraintStart_toStartOf="@+id/button_settings_confirmUsername"
+        app:layout_constraintTop_toTopOf="@+id/editText_settings_description"
+        tools:text="Confirm\n Description"
+        android:backgroundTint="@color/blue"
+        android:textColor="@color/darkGreen"
+        android:textSize="16sp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
