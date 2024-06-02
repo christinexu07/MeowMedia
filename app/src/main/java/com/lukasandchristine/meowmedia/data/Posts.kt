@@ -12,4 +12,5 @@ data class Posts(
     var isVideo: Boolean = false,
     var likeCount: Int = 0,
     var comments: List<Comments>? = null,
+    var objectId: String? = null
 ): Parcelable

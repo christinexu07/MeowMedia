@@ -1,6 +1,5 @@
 package com.lukasandchristine.meowmedia.activities
 
-import android.R.attr.password
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -13,7 +12,6 @@ import com.backendless.persistence.DataQueryBuilder
 import com.lukasandchristine.meowmedia.data.Posts
 import com.lukasandchristine.meowmedia.data.Users
 import com.lukasandchristine.meowmedia.databinding.ActivityPostBinding
-import com.lukasandchristine.meowmedia.misc.Constants
 import com.squareup.picasso.Picasso
 import java.text.DecimalFormat
 import kotlin.math.floor
@@ -32,6 +30,7 @@ class PostActivity : AppCompatActivity() {
     private var post: Posts? = null
     private var userObject: Users? = null
     private lateinit var postAuthor: Users
+    private var followingList: MutableList<Users> = mutableListOf()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPostBinding.inflate(layoutInflater)
@@ -47,24 +46,18 @@ class PostActivity : AppCompatActivity() {
         Log.d(TAG, "onCreate: $post")
         Log.d(TAG, "onCreate: $userObject")
 
-        if(userObject == null) {
-            getUserInfo()
-        }
+        getUserInfo()
         if(post != null) {
             getAuthorInfo()
         }
     }
 
-    override fun onStop() {
-        super.onStop()
-        updateUserRecord()
-        updatePostAuthorRecord()
-        updatePostRecord()
-        finish()
-    }
-
     private fun setListeners() {
         binding.imageViewPostBack.setOnClickListener {
+            updateUserRecord()
+            updatePostAuthorRecord()
+            updatePostRecord()
+            updateFollowingRecord()
             finish()
         }
         binding.buttonPostFollow.setOnClickListener {
@@ -93,10 +86,27 @@ class PostActivity : AppCompatActivity() {
         }
     }
 
+    private fun updateFollowingRecord() {
+        followingList.add(postAuthor)
+        userObject?.followingList = followingList
+        Log.d(TAG, "userObject updateFollowingRecord: $userObject")
+        Log.d(TAG, "followingList: $followingList")
+        Backendless.Data.of(Users::class.java).save(userObject, object: AsyncCallback<Users?> {
+            override fun handleResponse(response: Users?) {
+                Log.d(TAG, "handleResponse updateFollowingRecord: successful save")
+            }
+
+            override fun handleFault(fault: BackendlessFault) {
+                Log.d(TAG, "handleFault updateFollowingRecord: Code ${fault.code}\n${fault.detail}")
+            }
+        })
+    }
+
     private fun updateUserRecord() {
         val user = BackendlessUser()
         user.setProperty("objectId", userObject!!.objectId)
         user.setProperty("followingCount", userObject!!.followingCount)
+        Log.d(TAG, "userObject: $userObject")
         Backendless.UserService.update(user, object: AsyncCallback<BackendlessUser?> {
             override fun handleResponse(user: BackendlessUser?) {
                 Log.d(TAG, "handleResponse updateUserRecord: successful update")
@@ -131,23 +141,24 @@ class PostActivity : AppCompatActivity() {
             post!!.postContent,
             post!!.isVideo,
             post!!.likeCount,
-            post!!.comments
+            post!!.comments,
         )
-        Backendless.Data.of(Posts::class.java).save(post, object: AsyncCallback<Posts> {
-            override fun handleResponse(savedPost: Posts) {
-                savedPost.likeCount = newPost.likeCount
-                Backendless.Data.of(Posts::class.java)
-                    .save(savedPost, object : AsyncCallback<Posts?> {
-                        override fun handleResponse(response: Posts?) {
-                            Log.d(TAG, "handleResponse updatePostRecord: successful update")
-                        }
 
-                        override fun handleFault(fault: BackendlessFault) {
-                            Log.d(TAG, "handleFault updatePostRecord: Code ${fault.code}\n${fault.detail}")
-                        }
-                    })
-                Log.d(TAG, "handleResponse updatePostRecord: successful update")
+        Backendless.Data.of(Posts::class.java).remove(post!!, object : AsyncCallback<Long?> {
+            override fun handleResponse(response: Long?) {
+                Log.d(TAG, "handleResponse deletePostRecord: successful delete")
             }
+
+            override fun handleFault(fault: BackendlessFault) {
+                Log.d(TAG, "handleFault deletePostRecord: Code ${fault.code}\n${fault.detail}")
+            }
+        })
+
+        Backendless.Data.of(Posts::class.java).save(newPost, object : AsyncCallback<Posts?> {
+            override fun handleResponse(response: Posts?) {
+                Log.d(TAG, "handleResponse updatePostRecord: successful save")
+            }
+
             override fun handleFault(fault: BackendlessFault) {
                 Log.d(TAG, "handleFault updatePostRecord: Code ${fault.code}\n${fault.detail}")
             }

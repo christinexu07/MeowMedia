@@ -3,7 +3,9 @@ package com.lukasandchristine.meowmedia.activities
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import com.backendless.Backendless
 import com.backendless.async.callback.AsyncCallback
 import com.backendless.exceptions.BackendlessFault
@@ -33,6 +35,8 @@ class ProfilePageActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityProfilePageBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        binding.buttonProfilePageFollow.visibility = View.GONE
 
         userObject = intent.getParcelableExtra(MakePostActivity.EXTRA_USER)
         if(userObject == null) {

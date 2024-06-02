@@ -8,7 +8,6 @@ data class Users(
     var email: String? = null,
     var followerCount: Int = 0,
     var followingCount: Int = 0,
-    var postsList: List<Posts>? = null,
     var profileDescription: String? = "",
     var profilePicture: String? = "",
     var username: String? = null,

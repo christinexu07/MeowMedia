@@ -37,6 +37,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        getUserInfo()
+    }
+
     private fun setListeners() {
         binding.imageButtonMainAdd.setOnClickListener {
             val intent = Intent(this, MakePostActivity::class.java).apply {
@@ -93,9 +98,9 @@ class MainActivity : AppCompatActivity() {
         val queryBuilder = DataQueryBuilder.create()
         queryBuilder.whereClause = whereClause
         Backendless.Data.of(Posts::class.java).find(queryBuilder, object: AsyncCallback<List<Posts>> {
-            override fun handleResponse(postList: List<Posts>?) {
-                Log.d(TAG, "handleResponse getSelfPosts: $postList")
-                userObject?.postsList = postList!!
+            override fun handleResponse(posts: List<Posts>?) {
+                Log.d(TAG, "handleResponse getSelfPosts: $posts")
+                postsList = posts!!
             }
 
             override fun handleFault(fault: BackendlessFault) {

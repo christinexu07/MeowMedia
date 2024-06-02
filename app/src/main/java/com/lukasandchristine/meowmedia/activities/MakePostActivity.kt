@@ -78,6 +78,7 @@ class MakePostActivity : AppCompatActivity() {
     private fun setListeners() {
         binding.buttonMakePostMakePost.setOnClickListener{
             uploadContent()
+            Log.d(TAG, "Here")
             makePost()
         }
         binding.imageViewMakePostContent.setOnClickListener{
@@ -112,14 +113,17 @@ class MakePostActivity : AppCompatActivity() {
 
     private fun uploadContent() {
         val photo: Bitmap = binding.imageViewMakePostContent.drawable.toBitmap()
+        Log.d(TAG, "uploadContent")
         CoroutineScope(Dispatchers.IO).launch {
             try {
+                Log.d(TAG, "uploadContent: Success")
                 Backendless.Files.Android.upload(
                     photo,
                     Bitmap.CompressFormat.PNG,
                     100,
                     "${userObject?.username}_${postCount + 1}.png",
-                    "Posts"
+                    "Posts",
+                    true
                 )
             } catch (e: Exception) {
                 throw e
@@ -138,7 +142,6 @@ class MakePostActivity : AppCompatActivity() {
             post.postContent = "https://stockyteaching-us.backendless.app/api/files/Posts/${userObject?.username}_${postCount + 1}.png"
         }
         post.isVideo = isVideo
-
         Backendless.Data.of(Posts::class.java).save(post, object : AsyncCallback<Posts?> {
             override fun handleResponse(response: Posts?) {
                 Log.d(TAG, "handleResponse makePost: $response")
@@ -160,16 +163,29 @@ class MakePostActivity : AppCompatActivity() {
             override fun handleResponse(userList: List<Users>?) {
                 Log.d(TAG, "handleResponse getUserInfo: $userList")
                 userObject = userList?.get(0)!!
-                postCount = if(userObject?.postsList == null) {
-                    0
-                } else {
-                    userObject?.postsList!!.size
-                }
+                getPosts()
                 setListeners()
             }
 
             override fun handleFault(fault: BackendlessFault) {
                 Log.d(TAG, "handleFault getUserInfo: Code ${fault.code}\n${fault.detail}")
+            }
+        })
+    }
+
+    private fun getPosts() {
+        val userId = Backendless.UserService.CurrentUser().userId!!
+        val whereClause = "ownerId = '$userId'"
+        val queryBuilder = DataQueryBuilder.create()
+        queryBuilder.whereClause = whereClause
+        Backendless.Data.of(Posts::class.java).find(queryBuilder, object: AsyncCallback<List<Posts>> {
+            override fun handleResponse(posts: List<Posts>?) {
+                Log.d(TAG, "handleResponse getPosts: $posts")
+                postCount = posts?.size!!
+            }
+
+            override fun handleFault(fault: BackendlessFault) {
+                Log.d(TAG, "handleFault getPosts: Code ${fault.code}\n${fault.detail}")
             }
         })
     }
