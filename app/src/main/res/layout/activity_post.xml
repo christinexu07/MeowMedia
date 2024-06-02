@@ -34,9 +34,10 @@
         android:id="@+id/imageView_post_filledHeart"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView_post_hollowHeart"
-        app:layout_constraintEnd_toEndOf="@+id/imageView_post_hollowHeart"
-        app:layout_constraintTop_toTopOf="@+id/imageView_post_hollowHeart"
+        android:layout_marginEnd="32dp"
+        app:layout_constraintBottom_toBottomOf="@+id/button_post_follow"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/button_post_unfollow"
         app:srcCompat="@drawable/heart_filled" />
 
     <ImageView
@@ -123,6 +124,7 @@
         android:id="@+id/button_post_unfollow"
         android:layout_width="125dp"
         android:layout_height="50dp"
+        android:layout_marginStart="24dp"
         android:backgroundTint="@color/green"
         android:backgroundTintMode="add"
         android:drawableTint="@color/green"
@@ -134,9 +136,8 @@
         android:textSize="18sp"
         app:cornerRadius="10sp"
         app:iconTint="@color/green"
-        app:layout_constraintBottom_toBottomOf="@+id/button_post_follow"
-        app:layout_constraintLeft_toLeftOf="@id/button_post_follow"
-        app:layout_constraintRight_toRightOf="@id/button_post_follow"
-        app:layout_constraintStart_toStartOf="@+id/button_post_follow" />
+        app:layout_constraintBottom_toTopOf="@+id/textView_post_title"
+        app:layout_constraintStart_toEndOf="@+id/textView_post_username"
+        app:layout_constraintTop_toTopOf="@+id/textView_post_username"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

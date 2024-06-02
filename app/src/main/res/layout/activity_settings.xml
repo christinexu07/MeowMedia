@@ -7,13 +7,25 @@
     android:layout_height="match_parent"
     tools:context=".activities.SettingsActivity">
 
-    <TextView
-        android:id="@+id/textView_settings_header"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        app:layout_constraintEnd_toEndOf="parent"
+    <ImageView
+        android:id="@+id/imageView_settings_back"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintEnd_toStartOf="@+id/imageView_settings_logo"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Edit Profile" />
+        app:srcCompat="@drawable/back" />
+
+    <ImageView
+        android:id="@+id/imageView_settings_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView_settings_back"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/imageView_settings_back"
+        app:layout_constraintTop_toTopOf="@+id/imageView_settings_back"
+        app:srcCompat="@drawable/title" />
 </androidx.constraintlayout.widget.ConstraintLayout>
