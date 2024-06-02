@@ -14,4 +14,5 @@ data class Users(
     var username: String? = null,
     var ownerId: String? = null,
     var followingList: List<Users>? = null,
+    var objectId: String? = null,
 ): Parcelable

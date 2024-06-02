@@ -67,7 +67,7 @@ class MainAdapter(private var postsList: List<Posts>): RecyclerView.Adapter<Main
     }
 
     private fun getUserInfo(position: Int): Users {
-        var userObject: Users = Users()
+        var userObject = Users()
         val userId = postsList[position].ownerId
         val whereClause = "ownerId = '$userId'"
         val queryBuilder = DataQueryBuilder.create()
@@ -77,7 +77,6 @@ class MainAdapter(private var postsList: List<Posts>): RecyclerView.Adapter<Main
             override fun handleResponse(userList: List<Users>?) {
                 Log.d(MainActivity.TAG, "handleResponse getUserInfo: $userList")
                 userObject = userList?.get(0)!!
-
             }
 
             override fun handleFault(fault: BackendlessFault) {

@@ -42,6 +42,11 @@ class ProfilePageActivity : AppCompatActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        getUserInfo()
+    }
+
     private fun setListeners() {
         binding.imageButtonProfilePageHome.setOnClickListener{
             val intent = Intent(this, MainActivity::class.java).apply {
@@ -104,10 +109,6 @@ class ProfilePageActivity : AppCompatActivity() {
                 .apply(RequestOptions.circleCropTransform()).into(binding.imageViewProfilePageProfilePicture)
         }
 
-        Picasso
-            .get()
-            .load("https://stockyteaching-us.backendless.app/api/files/Posts/username_${0}.png")
-            .into(binding.imageViewProfilePageOne)
         for(i in posts.indices) {
             Picasso.get()
                 .load(posts[i].postContent)

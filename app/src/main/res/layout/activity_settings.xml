@@ -35,7 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="TextView"
+        android:text="Edit Profile"
         android:textSize="34sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -43,7 +43,7 @@
         tools:text="Edit Profile" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/imageView_post_profilePicture"
         android:layout_width="175dp"
         android:layout_height="175dp"
         android:layout_marginTop="40dp"
@@ -60,8 +60,8 @@
         android:backgroundTint="#000000"
         android:text="TextView"
         android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="@+id/imageView"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:layout_constraintStart_toStartOf="@+id/imageView_post_profilePicture"
+        app:layout_constraintTop_toBottomOf="@+id/imageView_post_profilePicture"
         tools:text="Username" />
 
     <EditText
@@ -78,41 +78,41 @@
         android:id="@+id/button_settings_confirmPhoto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
-        app:layout_constraintTop_toTopOf="@+id/imageView"
-        tools:text="Confirm \nPhoto"
         android:backgroundTint="@color/blue"
+        android:text="Confirm \nPhoto"
         android:textColor="@color/darkGreen"
-        android:textSize="16sp"/>
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView_post_profilePicture"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageView_post_profilePicture"
+        app:layout_constraintTop_toTopOf="@+id/imageView_post_profilePicture"
+        tools:text="Confirm \nPhoto" />
 
     <Button
         android:id="@+id/button_settings_confirmUsername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button"
+        android:backgroundTint="@color/blue"
+        android:text="Confirm \nUsername"
+        android:textColor="@color/darkGreen"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/editText_settings_username"
         app:layout_constraintEnd_toEndOf="@+id/button_settings_confirmPhoto"
         app:layout_constraintStart_toStartOf="@+id/button_settings_confirmPhoto"
         app:layout_constraintTop_toTopOf="@+id/editText_settings_username"
-        tools:text="Confirm\n Username"
-        android:backgroundTint="@color/blue"
-        android:textColor="@color/darkGreen"
-        android:textSize="16sp"/>
+        tools:text="Confirm \nUsername" />
 
     <Button
         android:id="@+id/button_settings_confirmDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button"
+        android:backgroundTint="@color/blue"
+        android:text="Confirm \nDescription"
+        android:textColor="@color/darkGreen"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/editText_settings_description"
         app:layout_constraintEnd_toEndOf="@+id/button_settings_confirmUsername"
         app:layout_constraintStart_toStartOf="@+id/button_settings_confirmUsername"
         app:layout_constraintTop_toTopOf="@+id/editText_settings_description"
-        tools:text="Confirm\n Description"
-        android:backgroundTint="@color/blue"
-        android:textColor="@color/darkGreen"
-        android:textSize="16sp"/>
+        tools:text="Confirm \nDescription" />
 </androidx.constraintlayout.widget.ConstraintLayout>

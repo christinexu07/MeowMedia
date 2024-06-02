@@ -1,21 +1,25 @@
 package com.lukasandchristine.meowmedia.activities
 
+import android.R.attr.password
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.backendless.Backendless
+import com.backendless.BackendlessUser
 import com.backendless.async.callback.AsyncCallback
 import com.backendless.exceptions.BackendlessFault
 import com.backendless.persistence.DataQueryBuilder
 import com.lukasandchristine.meowmedia.data.Posts
 import com.lukasandchristine.meowmedia.data.Users
 import com.lukasandchristine.meowmedia.databinding.ActivityPostBinding
+import com.lukasandchristine.meowmedia.misc.Constants
 import com.squareup.picasso.Picasso
 import java.text.DecimalFormat
 import kotlin.math.floor
 import kotlin.math.log10
 import kotlin.math.pow
+
 
 class PostActivity : AppCompatActivity() {
     companion object {
@@ -90,28 +94,14 @@ class PostActivity : AppCompatActivity() {
     }
 
     private fun updateUserRecord() {
-        Backendless.Data.of(Users::class.java).save(userObject, object: AsyncCallback<Users> {
-            override fun handleResponse(savedUser: Users) {
-                savedUser.email = userObject!!.email
-                savedUser.followerCount = userObject!!.followerCount
-                savedUser.followingCount = userObject!!.followingCount
-                savedUser.postsList = userObject!!.postsList
-                savedUser.profileDescription = userObject!!.profileDescription
-                savedUser.profilePicture = userObject!!.profilePicture
-                savedUser.username = userObject!!.username
-                savedUser.ownerId = userObject!!.ownerId
-                savedUser.followingList = userObject!!.followingList
-                Backendless.Data.of(Users::class.java)
-                    .save(savedUser, object: AsyncCallback<Users?> {
-                        override fun handleResponse(response: Users?) {
-                            Log.d(TAG, "handleResponse updateUserRecord: successful update")
-                        }
-
-                        override fun handleFault(fault: BackendlessFault) {
-                            Log.d(TAG, "handleFault updateUserRecord: Code ${fault.code}\n${fault.detail}")
-                        }
-                    })
+        val user = BackendlessUser()
+        user.setProperty("objectId", userObject!!.objectId)
+        user.setProperty("followingCount", userObject!!.followingCount)
+        Backendless.UserService.update(user, object: AsyncCallback<BackendlessUser?> {
+            override fun handleResponse(user: BackendlessUser?) {
+                Log.d(TAG, "handleResponse updateUserRecord: successful update")
             }
+
             override fun handleFault(fault: BackendlessFault) {
                 Log.d(TAG, "handleFault updateUserRecord: Code ${fault.code}\n${fault.detail}")
             }
@@ -119,28 +109,14 @@ class PostActivity : AppCompatActivity() {
     }
 
     private fun updatePostAuthorRecord() {
-        Backendless.Data.of(Users::class.java).save(postAuthor, object: AsyncCallback<Users> {
-            override fun handleResponse(savedUser: Users) {
-                savedUser.email = postAuthor.email
-                savedUser.followerCount = postAuthor.followerCount
-                savedUser.followingCount = postAuthor.followingCount
-                savedUser.postsList = postAuthor.postsList
-                savedUser.profileDescription = postAuthor.profileDescription
-                savedUser.profilePicture = postAuthor.profilePicture
-                savedUser.username = postAuthor.username
-                savedUser.ownerId = postAuthor.ownerId
-                savedUser.followingList = postAuthor.followingList
-                Backendless.Data.of(Users::class.java)
-                    .save(savedUser, object: AsyncCallback<Users?> {
-                        override fun handleResponse(response: Users?) {
-                            Log.d(TAG, "handleResponse updatePostAuthorRecord: successful update")
-                        }
-
-                        override fun handleFault(fault: BackendlessFault) {
-                            Log.d(TAG, "handleFault updatePostAuthorRecord: Code ${fault.code}\n${fault.detail}")
-                        }
-                    })
+        val user = BackendlessUser()
+        user.setProperty("objectId", postAuthor.objectId)
+        user.setProperty("followerCount", postAuthor.followerCount)
+        Backendless.UserService.update(user, object: AsyncCallback<BackendlessUser?> {
+            override fun handleResponse(user: BackendlessUser?) {
+                Log.d(TAG, "handleResponse updatePostAuthorRecord: successful update")
             }
+
             override fun handleFault(fault: BackendlessFault) {
                 Log.d(TAG, "handleFault updatePostAuthorRecord: Code ${fault.code}\n${fault.detail}")
             }
@@ -148,15 +124,18 @@ class PostActivity : AppCompatActivity() {
     }
 
     private fun updatePostRecord() {
+        val newPost = Posts(
+            post!!.ownerId,
+            post!!.postTitle,
+            post!!.postDescription,
+            post!!.postContent,
+            post!!.isVideo,
+            post!!.likeCount,
+            post!!.comments
+        )
         Backendless.Data.of(Posts::class.java).save(post, object: AsyncCallback<Posts> {
             override fun handleResponse(savedPost: Posts) {
-                savedPost.ownerId = post!!.ownerId
-                savedPost.postTitle = post!!.postTitle
-                savedPost.postDescription = post!!.postDescription
-                savedPost.postContent = post!!.postContent
-                savedPost.isVideo = post!!.isVideo
-                savedPost.likeCount = post!!.likeCount
-                savedPost.comments = post!!.comments
+                savedPost.likeCount = newPost.likeCount
                 Backendless.Data.of(Posts::class.java)
                     .save(savedPost, object : AsyncCallback<Posts?> {
                         override fun handleResponse(response: Posts?) {
@@ -167,6 +146,7 @@ class PostActivity : AppCompatActivity() {
                             Log.d(TAG, "handleFault updatePostRecord: Code ${fault.code}\n${fault.detail}")
                         }
                     })
+                Log.d(TAG, "handleResponse updatePostRecord: successful update")
             }
             override fun handleFault(fault: BackendlessFault) {
                 Log.d(TAG, "handleFault updatePostRecord: Code ${fault.code}\n${fault.detail}")

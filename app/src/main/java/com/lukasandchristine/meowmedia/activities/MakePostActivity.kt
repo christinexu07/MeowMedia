@@ -81,10 +81,10 @@ class MakePostActivity : AppCompatActivity() {
             makePost()
         }
         binding.imageViewMakePostContent.setOnClickListener{
-            chooseContent()
+            pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
         binding.videoViewMakePostContent.setOnClickListener {
-            chooseContent()
+            pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
 
         binding.imageButtonMakePostHome.setOnClickListener{
@@ -129,8 +129,8 @@ class MakePostActivity : AppCompatActivity() {
 
     private fun makePost() {
         val post = Posts()
-        post.postTitle = binding.textViewMakePostTitle.text.toString()
-        post.postDescription = binding.textViewMakePostDescription.text.toString()
+        post.postTitle = binding.editTextMakePostTitle.text.toString()
+        post.postDescription = binding.editTextMakePostDescription.text.toString()
         post.ownerId = userObject?.ownerId
         if(isVideo) {
             post.postContent = "https://stockyteaching-us.backendless.app/api/files/Posts/${userObject?.username}_${postCount + 1}.mp4"
@@ -149,10 +149,6 @@ class MakePostActivity : AppCompatActivity() {
                 Log.d(TAG, "handleFault makePost: Code ${fault.code}\n${fault.detail}")
             }
         })
-    }
-
-    private fun chooseContent() {
-        pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
     }
 
     private fun getUserInfo() {
