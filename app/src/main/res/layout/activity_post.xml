@@ -34,20 +34,20 @@
         android:id="@+id/imageView_post_filledHeart"
         android:layout_width="48dp"
         android:layout_height="48dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="32dp"
-        app:layout_constraintBottom_toBottomOf="@+id/button_post_follow"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/button_post_unfollow"
+        app:layout_constraintTop_toBottomOf="@+id/imageView_post_content"
         app:srcCompat="@drawable/heart_filled" />
 
     <ImageView
         android:id="@+id/imageView_post_hollowHeart"
         android:layout_width="48dp"
         android:layout_height="48dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="32dp"
-        app:layout_constraintBottom_toBottomOf="@+id/button_post_follow"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/button_post_unfollow"
+        app:layout_constraintTop_toBottomOf="@+id/imageView_post_content"
         app:srcCompat="@drawable/heart_hollow" />
 
     <TextView
