@@ -81,7 +81,7 @@ class MainActivity : AppCompatActivity() {
         Backendless.Data.of(Posts::class.java).find(queryBuilder, object: AsyncCallback<List<Posts>> {
             override fun handleResponse(postList: List<Posts>?) {
                 Log.d(TAG, "handleResponse getOtherPosts: $postList")
-                postsList = postList!!
+                postsList = postList!!.sortedBy { -it.created }
                 refreshList()
                 setListeners()
             }

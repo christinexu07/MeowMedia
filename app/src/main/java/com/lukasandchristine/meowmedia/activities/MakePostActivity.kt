@@ -68,6 +68,7 @@ class MakePostActivity : AppCompatActivity() {
         if (userObject == null) {
             getUserInfo()
         } else {
+            getPosts()
             setListeners()
         }
 
@@ -113,10 +114,8 @@ class MakePostActivity : AppCompatActivity() {
 
     private fun uploadContent() {
         val photo: Bitmap = binding.imageViewMakePostContent.drawable.toBitmap()
-        Log.d(TAG, "uploadContent")
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                Log.d(TAG, "uploadContent: Success")
                 Backendless.Files.Android.upload(
                     photo,
                     Bitmap.CompressFormat.PNG,

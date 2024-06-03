@@ -33,6 +33,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/logo"
         tools:srcCompat="@drawable/logo" />
 
     <ImageView
@@ -44,6 +45,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView_login_logo"
+        app:srcCompat="@drawable/title"
         tools:srcCompat="@drawable/title" />
 
     <EditText
@@ -86,6 +88,7 @@
         android:layout_height="40dp"
         android:background="#00FFFFFF"
         android:text="@string/sign_up"
+        android:textColor="#FFFFFF"
         android:textColorLink="@color/creme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -44,8 +44,8 @@ class ReelsActivity : AppCompatActivity() {
 
         binding.recyclerViewReelsReels.addOnItemTouchListener(
             DoubleClickListener(
-                onSingleClick = { position ->
-                                
+                onSingleClick = {
+
                 },
                 onDoubleClick = { position ->
                     // Handle double click
@@ -82,8 +82,8 @@ class ReelsActivity : AppCompatActivity() {
 
         val recyclerView: RecyclerView = binding.recyclerViewReelsReels
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        val snapHelper: SnapHelper = LinearSnapHelper()
-        snapHelper.attachToRecyclerView(binding.recyclerViewReelsReels)
+//        val snapHelper: SnapHelper = LinearSnapHelper()
+//        snapHelper.attachToRecyclerView(binding.recyclerViewReelsReels)
         recyclerView.adapter = postListAdapter
         postListAdapter.notifyDataSetChanged()
     }
@@ -94,8 +94,7 @@ class ReelsActivity : AppCompatActivity() {
         val queryBuilder = DataQueryBuilder.create()
         queryBuilder.setPageSize(25)
         queryBuilder.whereClause = whereClause
-        Backendless.Data.of(Posts::class.java).find(queryBuilder, object:
-            AsyncCallback<List<Posts>> {
+        Backendless.Data.of(Posts::class.java).find(queryBuilder, object: AsyncCallback<List<Posts>> {
             override fun handleResponse(postList: List<Posts>?) {
                 Log.d(TAG, "handleResponse getPosts: $postList")
                 postsList = postList!!.filter{

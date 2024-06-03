@@ -1,5 +1,6 @@
 package com.lukasandchristine.meowmedia.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -46,6 +47,7 @@ class ReelsAdapter(private var postsList: List<Posts>): RecyclerView.Adapter<Ree
                 .get()
                 .load(post.postContent)
                 .into(holder.imageViewReel)
+            Log.d(TAG, "onBindViewHolder: $post")
         }
     }
 
